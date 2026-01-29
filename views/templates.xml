@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Add "Request Quote" button on the cart page -->
+    <template id="cart_request_quote_button"
+              inherit_id="website_sale.navigation_buttons"
+              name="Request Quote Button">
+        <xpath expr="//a[@name='website_sale_main_button']" position="after">
+            <t t-if="xmlid == 'website_sale.cart'">
+                <a role="button"
+                   t-attf-class="btn btn-secondary w-100 mt-2 #{not website_sale_order._is_cart_ready() and 'disabled'}"
+                   href="/shop/request_quotation">
+                    <i class="fa fa-file-text-o me-2"/>
+                    Request a Quote
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Add "Request Quote" button on the payment page -->
+    <template id="payment_request_quote_button"
+              inherit_id="website_sale.payment"
+              name="Request Quote on Payment Page">
+        <xpath expr="//div[@id='payment_method']" position="before">
+            <div class="card mb-3">
+                <div class="card-body text-center">
+                    <p class="mb-2 fw-bold">Don't want to pay now?</p>
+                    <a role="button"
+                       class="btn btn-secondary"
+                       href="/shop/request_quotation">
+                        <i class="fa fa-file-text-o me-2"/>
+                        Request a Quote Instead
+                    </a>
+                    <p class="text-muted small mt-2 mb-0">
+                        We will send you a formal quotation by email.
+                    </p>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Quotation confirmation page -->
+    <template id="quotation_confirmation" name="Quotation Request Confirmation">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 text-center">
+                            <div class="mb-4">
+                                <i class="fa fa-check-circle text-success" style="font-size: 64px;"/>
+                            </div>
+                            <h1 class="mb-3">Quote Request Received!</h1>
+                            <p class="lead text-muted mb-4">
+                                Thank you for your interest. We have received your quote request
+                                <strong t-out="order.name"/> and will get back to you shortly.
+                            </p>
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">Order Summary</h5>
+                                    <table class="table table-sm mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-start">Product</th>
+                                                <th class="text-center">Qty</th>
+                                                <th class="text-end">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="order.order_line" t-as="line">
+                                                <tr t-if="not line.display_type">
+                                                    <td class="text-start" t-out="line.product_id.name"/>
+                                                    <td class="text-center" t-out="int(line.product_uom_qty)"/>
+                                                    <td class="text-end" t-out="line.price_subtotal"
+                                                        t-options="{'widget': 'monetary', 'display_currency': order.currency_id}"/>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="fw-bold">
+                                                <td colspan="2" class="text-end">Total:</td>
+                                                <td class="text-end" t-out="order.amount_total"
+                                                    t-options="{'widget': 'monetary', 'display_currency': order.currency_id}"/>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <p class="text-muted">
+                                We will review your request and send you a formal quotation by email.
+                            </p>
+                            <a href="/shop" class="btn btn-primary mt-3">
+                                <i class="fa fa-arrow-left me-2"/>
+                                Continue Shopping
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
