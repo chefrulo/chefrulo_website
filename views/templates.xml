@@ -6,7 +6,7 @@
               inherit_id="website_sale.navigation_buttons"
               name="Request Quote Button">
         <xpath expr="//a[@name='website_sale_main_button']" position="after">
-            <t t-if="xmlid == 'website_sale.cart'">
+            <t t-if="xmlid == 'website_sale.cart' and website.enable_request_quote">
                 <a role="button"
                    t-attf-class="btn btn-secondary w-100 mt-2 #{not website_sale_order._is_cart_ready() and 'disabled'}"
                    href="/shop/request_quotation">
@@ -22,7 +22,7 @@
               inherit_id="website_sale.payment"
               name="Request Quote on Payment Page">
         <xpath expr="//t[@name='website_sale_non_free_cart']" position="before">
-            <div class="card mb-3">
+            <div t-if="website.enable_request_quote" class="card mb-3">
                 <div class="card-body text-center">
                     <p class="mb-2 fw-bold">Don't want to pay now?</p>
                     <a role="button"
