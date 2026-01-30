@@ -21,7 +21,7 @@
     <template id="payment_request_quote_button"
               inherit_id="website_sale.payment"
               name="Request Quote on Payment Page">
-        <xpath expr="//div[@id='payment_method']" position="before">
+        <xpath expr="//t[@name='website_sale_non_free_cart']" position="before">
             <div class="card mb-3">
                 <div class="card-body text-center">
                     <p class="mb-2 fw-bold">Don't want to pay now?</p>

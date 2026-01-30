@@ -17,6 +17,11 @@
     "data": [
         "views/templates.xml",
     ],
+    "assets": {
+        "web.assets_frontend": [
+            "chefrulo_website/static/src/scss/style.scss",
+        ],
+    },
     "installable": True,
     "auto_install": False,
 }
