@@ -99,4 +99,100 @@
         </t>
     </template>
 
+    <!-- Menu / Catalog page -->
+    <template id="menu_page" name="Menu Catalog Page">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <!-- Editable zone: above header (hero, banners, etc.) -->
+                <div id="menu_top" class="oe_structure"/>
+
+                <!-- Header -->
+                <div class="container py-5 text-center">
+                    <h1 class="display-4 fw-bold">Our Menu</h1>
+                    <p class="lead text-muted">Browse our selection and add items to your cart</p>
+                </div>
+
+                <!-- Editable zone: between header and products -->
+                <div id="menu_before_products" class="oe_structure"/>
+
+                <div class="container pb-5">
+                    <t t-foreach="menu_data" t-as="section">
+                        <!-- Category Header -->
+                        <div class="mb-5">
+                            <div class="border-bottom pb-2 mb-4">
+                                <h2 class="fw-bold" t-out="section['category'].name"/>
+                            </div>
+
+                            <t t-foreach="section['subcategories']" t-as="sub">
+                                <!-- Subcategory Header -->
+                                <t t-if="sub['category'].id != section['category'].id">
+                                    <h4 class="text-muted mt-4 mb-3" t-out="sub['category'].name"/>
+                                </t>
+
+                                <!-- Product List -->
+                                <t t-foreach="sub['products']" t-as="product">
+                                    <div class="row align-items-center py-3 border-bottom">
+                                        <!-- Product Image -->
+                                        <div class="col-auto">
+                                            <a t-attf-href="/shop/#{product.id}">
+                                                <img t-att-src="website.image_url(product, 'image_128')"
+                                                     t-att-alt="product.name"
+                                                     class="rounded"
+                                                     style="width: 80px; height: 80px; object-fit: cover;"/>
+                                            </a>
+                                        </div>
+                                        <!-- Product Info -->
+                                        <div class="col">
+                                            <a t-attf-href="/shop/#{product.id}" class="text-decoration-none text-reset">
+                                                <h5 class="mb-1" t-out="product.name"/>
+                                            </a>
+                                            <p t-if="product.description_sale"
+                                               class="text-muted small mb-0"
+                                               t-out="product.description_sale"/>
+                                        </div>
+                                        <!-- Price -->
+                                        <div class="col-auto text-end">
+                                            <span class="fw-bold fs-5"
+                                                  t-out="product.list_price"
+                                                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                        </div>
+                                        <!-- Add to Cart -->
+                                        <div class="col-auto">
+                                            <form class="js_menu_add_to_cart d-flex align-items-center gap-2">
+                                                <input type="number"
+                                                       class="form-control form-control-sm text-center"
+                                                       style="width: 70px;"
+                                                       name="add_qty"
+                                                       value="1"
+                                                       min="1"/>
+                                                <button type="button"
+                                                        class="btn btn-primary btn-sm js_menu_cart_btn"
+                                                        t-att-data-product-id="product.product_variant_id.id">
+                                                    <i class="fa fa-cart-plus me-1"/>
+                                                    Add
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                    </t>
+
+                    <!-- Empty state -->
+                    <t t-if="not menu_data">
+                        <div class="text-center py-5">
+                            <i class="fa fa-cutlery text-muted" style="font-size: 64px;"/>
+                            <h3 class="mt-3 text-muted">Menu coming soon</h3>
+                            <p class="text-muted">We are preparing our menu. Please check back later.</p>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Editable zone: below products (testimonials, contact, etc.) -->
+                <div id="menu_bottom" class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
 </odoo>

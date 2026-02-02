@@ -2,6 +2,63 @@ from odoo import http
 from odoo.http import request
 
 
+class WebsiteMenu(http.Controller):
+
+    @http.route(['/menu', '/catering'], type='http', auth='public', website=True)
+    def menu_page(self, **post):
+        """Display a catalog/menu page with categories and products."""
+        website = request.website
+        Category = request.env['product.public.category'].sudo()
+        Product = request.env['product.template'].sudo()
+
+        # Get top-level categories (no parent) for current website
+        domain = [('parent_id', '=', False)]
+        if hasattr(Category, 'website_id'):
+            domain += website.website_domain()
+        categories = Category.search(domain, order='sequence, name')
+
+        # Build category data with subcategories and their products
+        menu_data = []
+        for cat in categories:
+            subcategories = []
+            children = cat.child_id.sorted(key=lambda c: (c.sequence, c.name))
+            if children:
+                for subcat in children:
+                    products = Product.search([
+                        ('public_categ_ids', 'in', [subcat.id]),
+                        ('is_published', '=', True),
+                        ('sale_ok', '=', True),
+                    ], order='name')
+                    if products:
+                        subcategories.append({
+                            'category': subcat,
+                            'products': products,
+                        })
+            else:
+                # No subcategories - show products directly under this category
+                products = Product.search([
+                    ('public_categ_ids', 'in', [cat.id]),
+                    ('is_published', '=', True),
+                    ('sale_ok', '=', True),
+                ], order='name')
+                if products:
+                    subcategories.append({
+                        'category': cat,
+                        'products': products,
+                    })
+
+            if subcategories:
+                menu_data.append({
+                    'category': cat,
+                    'subcategories': subcategories,
+                })
+
+        values = {
+            'menu_data': menu_data,
+        }
+        return request.render('chefrulo_website.menu_page', values)
+
+
 class WebsiteQuotation(http.Controller):
 
     @http.route('/shop/request_quotation', type='http', auth='public', website=True)
