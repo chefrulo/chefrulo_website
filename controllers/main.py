@@ -4,18 +4,35 @@ from odoo.http import request
 
 class WebsiteMenu(http.Controller):
 
-    @http.route(['/menu', '/catering'], type='http', auth='public', website=True)
+    @http.route('/menu', type='http', auth='public', website=True)
     def menu_page(self, **post):
+        """Display a catalog/menu page with all categories and products."""
+        return self._render_menu_page()
+
+    @http.route('/catering', type='http', auth='public', website=True)
+    def catering_page(self, **post):
+        """Display only Catering category and its subcategories/products."""
+        return self._render_menu_page(category_filter='Catering')
+
+    def _render_menu_page(self, category_filter=None):
         """Display a catalog/menu page with categories and products."""
         website = request.website
         Category = request.env['product.public.category'].sudo()
         Product = request.env['product.template'].sudo()
 
-        # Get top-level categories (no parent) for current website
-        domain = [('parent_id', '=', False)]
-        if hasattr(Category, 'website_id'):
-            domain += website.website_domain()
-        categories = Category.search(domain, order='sequence, name')
+        # Get categories based on filter
+        if category_filter:
+            # Find the specific category by name
+            domain = [('name', '=', category_filter)]
+            if hasattr(Category, 'website_id'):
+                domain += website.website_domain()
+            categories = Category.search(domain, order='sequence, name')
+        else:
+            # Get all top-level categories (no parent)
+            domain = [('parent_id', '=', False)]
+            if hasattr(Category, 'website_id'):
+                domain += website.website_domain()
+            categories = Category.search(domain, order='sequence, name')
 
         # Build category data with subcategories and their products
         menu_data = []
