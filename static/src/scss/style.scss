@@ -5,3 +5,56 @@
 body[data-website-id="3"] h3 {
     font-family: 'Montserrat', sans-serif;
 }
+
+// ========================================
+// Frozen page specific styles (/frozen)
+// ========================================
+html[data-view-xmlid="website.frozen"] {
+
+    // Dark background for the whole page
+    body,
+    #wrapwrap {
+        background-color: #1a1a1a !important;
+        background: #1a1a1a !important;
+    }
+
+    // First s_three_columns after hero - overlaps with semi-transparent background
+    .s_parallax + .s_three_columns {
+        position: relative;
+        margin-top: -120px;
+        z-index: 10;
+
+        // Semi-transparent dark container
+        > .container,
+        > .container-fluid,
+        > .o_container_small {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 40px 30px;
+            backdrop-filter: blur(8px);
+        }
+
+        // Transparent cards inside (override text-bg-white)
+        .card,
+        .card.text-bg-white {
+            background: transparent !important;
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        // White text for contrast
+        h1, h2, h3, h4, h5, h6,
+        .card-title {
+            color: #fff !important;
+        }
+
+        p, .card-text {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        a:not(.btn) {
+            color: #f5a623 !important;
+        }
+    }
+}
