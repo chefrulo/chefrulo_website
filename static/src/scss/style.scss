@@ -67,3 +67,31 @@ html[data-view-xmlid="website.frozen"] {
         }
     }
 }
+
+// ========================================
+// Google Reviews Badge Snippet
+// ========================================
+.s_google_reviews {
+    .google-reviews-badge {
+        transition: all 0.2s ease;
+        min-width: 280px;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        }
+
+        .stars {
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .arrow {
+            transition: transform 0.2s ease;
+        }
+
+        &:hover .arrow {
+            transform: translateX(3px);
+        }
+    }
+}
