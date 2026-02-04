@@ -245,7 +245,7 @@
 
     <!-- Register Google Reviews as a Website Builder Snippet -->
     <template id="google_reviews_snippet" inherit_id="website.snippets" name="Google Reviews Snippet">
-        <xpath expr="//snippets[@id='snippet_structure']" position="inside">
+        <xpath expr="//div[@id='snippet_structure']/div[@class='o_panel_body']" position="inside">
             <t t-snippet="chefrulo_website.s_google_reviews"
                t-thumbnail="/chefrulo_website/static/src/img/snippets/s_google_reviews.svg"/>
         </xpath>
