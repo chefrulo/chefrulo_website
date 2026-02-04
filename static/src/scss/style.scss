@@ -18,8 +18,8 @@ html[data-view-xmlid="website.frozen"] {
         background: #1a1a1a !important;
     }
 
-    // First s_three_columns after hero - overlaps with semi-transparent background
-    .s_parallax + .s_three_columns {
+    // s_three_columns inside parallax hero - semi-transparent background overlay
+    .s_parallax .s_three_columns {
         position: relative;
         margin-top: -120px;
         z-index: 10;
