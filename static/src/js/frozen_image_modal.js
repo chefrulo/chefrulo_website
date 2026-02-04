@@ -1,26 +1,21 @@
 /** @odoo-module **/
 
 // Image modal for frozen page - click on cards to see larger image
-console.log('Frozen image modal JS loaded!');
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM ready - frozen_image_modal.js');
-
-    // Debug: Check page info
-    const htmlEl = document.querySelector('html');
-    const viewXmlid = htmlEl ? htmlEl.getAttribute('data-view-xmlid') : 'not found';
+function initFrozenImageModal() {
     const path = window.location.pathname;
+    const htmlEl = document.querySelector('html');
+    const viewXmlid = htmlEl ? htmlEl.getAttribute('data-view-xmlid') : null;
 
-    console.log('Page path:', path);
-    console.log('data-view-xmlid:', viewXmlid);
-
-    // Only run on frozen page (check both path and xmlid)
+    // Only run on frozen page
     if (path !== '/frozen' && viewXmlid !== 'website.frozen') {
-        console.log('Not frozen page, skipping modal setup');
         return;
     }
 
-    console.log('Frozen page detected, setting up modal...');
+    // Check if modal already exists
+    if (document.getElementById('frozenImageModal')) {
+        return;
+    }
 
     // Create modal HTML
     const modalHTML = `
@@ -47,18 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalImg = document.getElementById('frozenImageModalImg');
     const modalTitle = document.getElementById('frozenImageModalTitle');
 
-    // Find ALL cards with images on the page
+    // Find all cards with images on the page
     const allCards = document.querySelectorAll('.card');
-    console.log('Found', allCards.length, 'cards');
 
-    allCards.forEach((card, index) => {
+    allCards.forEach(card => {
         const img = card.querySelector('.card-img-top');
-        if (!img) {
-            console.log('Card', index, 'has no image, skipping');
-            return;
-        }
-
-        console.log('Card', index, 'has image:', img.src.substring(0, 50) + '...');
+        if (!img) return;
 
         // Make card clickable
         card.style.cursor = 'pointer';
@@ -73,13 +62,16 @@ document.addEventListener('DOMContentLoaded', function() {
             modalImg.alt = img.alt || '';
             modalTitle.textContent = title ? title.textContent.trim() : '';
 
-            console.log('Opening modal for:', modalTitle.textContent);
-
-            // Show modal using Bootstrap
-            const modal = new bootstrap.Modal(modalElement);
-            modal.show();
+            // Show modal using jQuery
+            $(modalElement).modal('show');
         });
     });
+}
 
-    console.log('Frozen image modal: setup complete');
-});
+// With @odoo-module, DOMContentLoaded has already fired
+// So we run immediately with a small delay to ensure page is fully rendered
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFrozenImageModal);
+} else {
+    setTimeout(initFrozenImageModal, 100);
+}
