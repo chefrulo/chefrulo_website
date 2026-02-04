@@ -1,16 +1,26 @@
 /** @odoo-module **/
 
 // Image modal for frozen page - click on cards to see larger image
-document.addEventListener('DOMContentLoaded', function() {
-    // Only run on frozen page
-    const htmlEl = document.querySelector('html');
-    const viewXmlid = htmlEl ? htmlEl.getAttribute('data-view-xmlid') : null;
+console.log('Frozen image modal JS loaded!');
 
-    if (viewXmlid !== 'website.frozen') {
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM ready - frozen_image_modal.js');
+
+    // Debug: Check page info
+    const htmlEl = document.querySelector('html');
+    const viewXmlid = htmlEl ? htmlEl.getAttribute('data-view-xmlid') : 'not found';
+    const path = window.location.pathname;
+
+    console.log('Page path:', path);
+    console.log('data-view-xmlid:', viewXmlid);
+
+    // Only run on frozen page (check both path and xmlid)
+    if (path !== '/frozen' && viewXmlid !== 'website.frozen') {
+        console.log('Not frozen page, skipping modal setup');
         return;
     }
 
-    console.log('Frozen image modal: initializing...');
+    console.log('Frozen page detected, setting up modal...');
 
     // Create modal HTML
     const modalHTML = `
@@ -39,11 +49,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Find ALL cards with images on the page
     const allCards = document.querySelectorAll('.card');
-    console.log('Frozen image modal: found', allCards.length, 'cards');
+    console.log('Found', allCards.length, 'cards');
 
-    allCards.forEach(card => {
+    allCards.forEach((card, index) => {
         const img = card.querySelector('.card-img-top');
-        if (!img) return; // Skip cards without images
+        if (!img) {
+            console.log('Card', index, 'has no image, skipping');
+            return;
+        }
+
+        console.log('Card', index, 'has image:', img.src.substring(0, 50) + '...');
 
         // Make card clickable
         card.style.cursor = 'pointer';
@@ -66,5 +81,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    console.log('Frozen image modal: ready');
+    console.log('Frozen image modal: setup complete');
 });
