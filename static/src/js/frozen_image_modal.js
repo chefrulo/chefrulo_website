@@ -1,11 +1,16 @@
 /** @odoo-module **/
 
-// Image modal for frozen page - click on flavor cards to see larger image
+// Image modal for frozen page - click on cards to see larger image
 document.addEventListener('DOMContentLoaded', function() {
     // Only run on frozen page
-    if (!document.querySelector('html[data-view-xmlid="website.frozen"]')) {
+    const htmlEl = document.querySelector('html');
+    const viewXmlid = htmlEl ? htmlEl.getAttribute('data-view-xmlid') : null;
+
+    if (viewXmlid !== 'website.frozen') {
         return;
     }
+
+    console.log('Frozen image modal: initializing...');
 
     // Create modal HTML
     const modalHTML = `
@@ -16,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         <h5 class="modal-title text-white" id="frozenImageModalTitle"></h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body text-center p-0">
-                        <img id="frozenImageModalImg" src="" alt="" class="img-fluid rounded">
+                    <div class="modal-body text-center p-4">
+                        <img id="frozenImageModalImg" src="" alt="" class="img-fluid rounded" style="max-height: 70vh;">
                     </div>
                 </div>
             </div>
@@ -32,34 +37,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalImg = document.getElementById('frozenImageModalImg');
     const modalTitle = document.getElementById('frozenImageModalTitle');
 
-    // Find all flavor cards (the s_three_columns with 6 columns for flavors)
-    const flavorSection = document.querySelector('.s_three_columns .row');
-    if (!flavorSection) return;
+    // Find ALL cards with images on the page
+    const allCards = document.querySelectorAll('.card');
+    console.log('Frozen image modal: found', allCards.length, 'cards');
 
-    // Add click handlers to cards
-    const cards = flavorSection.querySelectorAll('.card');
-    cards.forEach(card => {
+    allCards.forEach(card => {
+        const img = card.querySelector('.card-img-top');
+        if (!img) return; // Skip cards without images
+
         // Make card clickable
         card.style.cursor = 'pointer';
 
         card.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
 
-            const img = card.querySelector('.card-img-top');
-            const title = card.querySelector('.card-title');
+            const title = card.querySelector('.card-title, h5, h4, h3');
 
-            if (img) {
-                modalImg.src = img.src;
-                modalImg.alt = img.alt || '';
-            }
+            modalImg.src = img.src;
+            modalImg.alt = img.alt || '';
+            modalTitle.textContent = title ? title.textContent.trim() : '';
 
-            if (title) {
-                modalTitle.textContent = title.textContent;
-            }
+            console.log('Opening modal for:', modalTitle.textContent);
 
             // Show modal using Bootstrap
             const modal = new bootstrap.Modal(modalElement);
             modal.show();
         });
     });
+
+    console.log('Frozen image modal: ready');
 });
