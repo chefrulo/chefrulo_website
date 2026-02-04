@@ -21,6 +21,7 @@
         "web.assets_frontend": [
             "chefrulo_website/static/src/scss/style.scss",
             "chefrulo_website/static/src/js/menu_add_to_cart.js",
+            "chefrulo_website/static/src/js/frozen_image_modal.js",
         ],
     },
     "installable": True,
