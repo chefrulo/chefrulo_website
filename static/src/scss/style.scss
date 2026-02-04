@@ -34,9 +34,12 @@ html[data-view-xmlid="website.frozen"] {
             backdrop-filter: blur(8px);
         }
 
-        // Transparent cards inside (override text-bg-white)
+        // Transparent cards inside (override Bootstrap text-bg-white)
         .card,
-        .card.text-bg-white {
+        .card.text-bg-white,
+        .text-bg-white {
+            --bs-bg-opacity: 0 !important;
+            --bs-card-bg: transparent !important;
             background: transparent !important;
             background-color: transparent !important;
             box-shadow: none !important;
