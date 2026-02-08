@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add Compare to Price field to product template form -->
+    <record id="product_template_form_view_compare_price" model="ir.ui.view">
+        <field name="name">product.template.form.compare.price</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <field name="list_price" position="after">
+                <field name="compare_list_price" string="Compare to Price"
+                       widget="monetary"
+                       options="{'currency_field': 'currency_id'}"
+                       help="Original price before discount. If set higher than Sales Price, will show as strikethrough with discount percentage."/>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -17,6 +17,7 @@
         "views/templates.xml",
         "views/snippets_products_block.xml",
         "views/res_config_settings_views.xml",
+        "views/product_views.xml",
     ],
     "assets": {
         "web.assets_frontend": [
