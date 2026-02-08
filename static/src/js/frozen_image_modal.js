@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
-// Image modal for frozen page - click on cards to see larger image
+// Image modal for frozen page - click on FLAVOR cards (inside parallax) to see larger image
+// Does NOT apply to product cards
 
 function initFrozenImageModal() {
     const path = window.location.pathname;
@@ -42,12 +43,17 @@ function initFrozenImageModal() {
     const modalImg = document.getElementById('frozenImageModalImg');
     const modalTitle = document.getElementById('frozenImageModalTitle');
 
-    // Find all cards with images on the page
-    const allCards = document.querySelectorAll('.card');
+    // Only target cards inside the parallax section (flavor cards)
+    // NOT product cards from snippets
+    const flavorCards = document.querySelectorAll('.s_parallax .card');
 
-    allCards.forEach(card => {
+    flavorCards.forEach(card => {
         const img = card.querySelector('.card-img-top');
         if (!img) return;
+
+        // Skip if card has a link that goes to /shop (it's a product)
+        const shopLink = card.querySelector('a[href*="/shop/"]');
+        if (shopLink) return;
 
         // Make card clickable
         card.style.cursor = 'pointer';
