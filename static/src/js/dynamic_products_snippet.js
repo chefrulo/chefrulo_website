@@ -30,6 +30,13 @@ function initDynamicProductsSnippets() {
             category_name: categoryName,
             limit: limit,
         }).then(function(products) {
+            // Debug: log product prices
+            console.log('Products received:', products.map(p => ({
+                name: p.name,
+                price: p.price,
+                compare_price: p.compare_price,
+                discount_percent: p.discount_percent
+            })));
             renderProducts(container, products);
         }).catch(function() {
             container.innerHTML = '<div class="text-center py-5 text-muted">Could not load products</div>';
