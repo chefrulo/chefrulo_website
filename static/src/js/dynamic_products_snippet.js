@@ -77,7 +77,6 @@ function renderProducts(container, products) {
                             <span class="current-price">${currentPrice}</span>
                             ${hasDiscount ? `<span class="original-price">${comparePrice}</span>` : ''}
                             ${hasDiscount ? `<span class="discount-badge">${discountBadge}</span>` : ''}
-                            ${!hasDiscount && product.has_variants ? '<span class="text-muted small">from</span>' : ''}
                         </div>
                         <div class="mt-auto">
                             <a href="${product.url}" class="btn btn-primary btn-sm w-100">
