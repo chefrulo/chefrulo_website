@@ -2,11 +2,8 @@
 
 import { jsonrpc } from "@web/core/network/rpc_service";
 
-console.log('Dynamic products snippet JS loaded');
-
 function initDynamicProductsSnippets() {
     const snippets = document.querySelectorAll('.s_dynamic_products_templates');
-    console.log('Found', snippets.length, 'dynamic product snippets');
 
     snippets.forEach(function(snippet) {
         // Skip if already initialized
@@ -20,10 +17,7 @@ function initDynamicProductsSnippets() {
         const limit = parseInt(snippet.dataset.limit) || 8;
         const container = snippet.querySelector('.products-container');
 
-        console.log('Loading products for category:', categoryName, 'limit:', limit);
-
         if (!container) {
-            console.error('No .products-container found in snippet');
             return;
         }
 
@@ -36,10 +30,8 @@ function initDynamicProductsSnippets() {
             category_name: categoryName,
             limit: limit,
         }).then(function(products) {
-            console.log('Received', products.length, 'products');
             renderProducts(container, products);
-        }).catch(function(error) {
-            console.error('Error loading products:', error);
+        }).catch(function() {
             container.innerHTML = '<div class="text-center py-5 text-muted">Could not load products</div>';
         });
     });
@@ -54,9 +46,16 @@ function renderProducts(container, products) {
     let html = '<div class="row g-4">';
 
     products.forEach(function(product) {
-        const priceFormatted = product.currency_position === 'before'
-            ? product.currency_symbol + ' ' + product.price.toFixed(2)
-            : product.price.toFixed(2) + ' ' + product.currency_symbol;
+        const formatPrice = (price) => {
+            return product.currency_position === 'before'
+                ? product.currency_symbol + ' ' + price.toFixed(2)
+                : price.toFixed(2) + ' ' + product.currency_symbol;
+        };
+
+        const currentPrice = formatPrice(product.price);
+        const hasDiscount = product.compare_price > 0;
+        const comparePrice = hasDiscount ? formatPrice(product.compare_price) : '';
+        const discountBadge = hasDiscount ? `${product.discount_percent}% off` : '';
 
         html += `
             <div class="col-6 col-md-4 col-lg-3">
@@ -69,14 +68,16 @@ function renderProducts(container, products) {
                     </a>
                     <div class="card-body d-flex flex-column">
                         <h6 class="card-title mb-2">
-                            <a href="${product.url}" class="text-decoration-none text-reset">
+                            <a href="${product.url}">
                                 ${product.name}
                             </a>
                         </h6>
-                        <p class="mb-2">
-                            <span class="fw-bold">${priceFormatted}</span>
-                            ${product.has_variants ? '<span class="text-muted small ms-1">from</span>' : ''}
-                        </p>
+                        <div class="product-price mb-2">
+                            <span class="current-price">${currentPrice}</span>
+                            ${hasDiscount ? `<span class="original-price">${comparePrice}</span>` : ''}
+                            ${hasDiscount ? `<span class="discount-badge">${discountBadge}</span>` : ''}
+                            ${product.has_variants ? '<span class="text-muted small">from</span>' : ''}
+                        </div>
                         <div class="mt-auto">
                             <a href="${product.url}" class="btn btn-primary btn-sm w-100">
                                 ${product.has_variants ? 'Choose Options' : 'View Product'}

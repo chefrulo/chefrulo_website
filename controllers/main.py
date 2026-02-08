@@ -103,11 +103,20 @@ class WebsiteProductsAPI(http.Controller):
 
         result = []
         for product in products:
+            # Calculate discount if compare_list_price exists and is higher
+            compare_price = getattr(product, 'compare_list_price', 0) or 0
+            current_price = product.list_price
+            discount_percent = 0
+            if compare_price > current_price:
+                discount_percent = round((1 - current_price / compare_price) * 100)
+
             result.append({
                 'id': product.id,
                 'name': product.name,
                 'description': product.description_sale or '',
-                'price': product.list_price,
+                'price': current_price,
+                'compare_price': compare_price if compare_price > current_price else 0,
+                'discount_percent': discount_percent,
                 'currency_symbol': website.currency_id.symbol,
                 'currency_position': website.currency_id.position,
                 'image_url': f'/web/image/product.template/{product.id}/image_256',

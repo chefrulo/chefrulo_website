@@ -95,3 +95,79 @@ html[data-view-xmlid="website.frozen"] {
         }
     }
 }
+
+// ========================================
+// Dynamic Products Snippet (Grouped by Template)
+// ========================================
+.s_dynamic_products_templates {
+    .product-template-card {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: translateY(-4px);
+        }
+
+        // Product image container
+        .card-img-top {
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        // Card body
+        .card-body {
+            padding: 12px 0;
+            background: transparent;
+        }
+
+        // Product title
+        .card-title {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+
+            a {
+                color: #017e84 !important;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        // Price section
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+
+            .current-price {
+                font-size: 1rem;
+                font-weight: 600;
+                color: #212529;
+            }
+
+            .original-price {
+                font-size: 0.9rem;
+                color: #6c757d;
+                text-decoration: line-through;
+            }
+
+            .discount-badge {
+                font-size: 0.8rem;
+                color: #198754;
+                font-weight: 500;
+            }
+        }
+
+        // Remove button styling - just show price
+        .btn {
+            display: none;
+        }
+    }
+}
