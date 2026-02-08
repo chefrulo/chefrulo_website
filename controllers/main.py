@@ -101,13 +101,21 @@ class WebsiteProductsAPI(http.Controller):
 
         products = Product.search(domain, limit=limit, order='name')
 
+        import logging
+        _logger = logging.getLogger(__name__)
+
         result = []
         for product in products:
-            # Calculate discount if compare_list_price exists and is higher
-            compare_price = getattr(product, 'compare_list_price', 0) or 0
+            # Get prices - for templates with variants, list_price may vary
             current_price = product.list_price
+            compare_price = product.compare_list_price if hasattr(product, 'compare_list_price') else 0
+            compare_price = compare_price or 0
+
+            _logger.info(f"Product {product.name}: list_price={current_price}, compare_list_price={compare_price}")
+
+            # Calculate discount percentage
             discount_percent = 0
-            if compare_price > current_price:
+            if compare_price > current_price and current_price > 0:
                 discount_percent = round((1 - current_price / compare_price) * 100)
 
             result.append({
