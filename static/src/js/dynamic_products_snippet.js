@@ -6,11 +6,12 @@ function initDynamicProductsSnippets() {
     const snippets = document.querySelectorAll('.s_dynamic_products_templates');
 
     snippets.forEach(function(snippet) {
-        // Skip if already initialized
-        if (snippet.dataset.initialized === 'true') {
+        // Always refresh data on page load (don't use cached HTML from editor)
+        // Skip only if we've initialized THIS session (not from saved HTML)
+        if (snippet._dynamicProductsInitialized) {
             return;
         }
-        snippet.dataset.initialized = 'true';
+        snippet._dynamicProductsInitialized = true;
 
         const categoryId = snippet.dataset.categoryId;
         const categoryName = snippet.dataset.categoryName || 'Frozen';
@@ -30,13 +31,6 @@ function initDynamicProductsSnippets() {
             category_name: categoryName,
             limit: limit,
         }).then(function(products) {
-            // Debug: log product prices
-            console.log('Products received:', products.map(p => ({
-                name: p.name,
-                price: p.price,
-                compare_price: p.compare_price,
-                discount_percent: p.discount_percent
-            })));
             renderProducts(container, products);
         }).catch(function() {
             container.innerHTML = '<div class="text-center py-5 text-muted">Could not load products</div>';

@@ -101,17 +101,12 @@ class WebsiteProductsAPI(http.Controller):
 
         products = Product.search(domain, limit=limit, order='name')
 
-        import logging
-        _logger = logging.getLogger(__name__)
-
         result = []
         for product in products:
             # Get prices - for templates with variants, list_price may vary
             current_price = product.list_price
             compare_price = product.compare_list_price if hasattr(product, 'compare_list_price') else 0
             compare_price = compare_price or 0
-
-            _logger.info(f"Product {product.name}: list_price={current_price}, compare_list_price={compare_price}")
 
             # Calculate discount percentage
             discount_percent = 0
