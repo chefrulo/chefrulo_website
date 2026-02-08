@@ -43,9 +43,9 @@ function initFrozenImageModal() {
     const modalImg = document.getElementById('frozenImageModalImg');
     const modalTitle = document.getElementById('frozenImageModalTitle');
 
-    // Only target cards inside the parallax section (flavor cards)
-    // NOT product cards from snippets
-    const flavorCards = document.querySelectorAll('.s_parallax .card');
+    // Target flavor cards in parallax OR three_columns sections
+    // NOT product cards from dynamic snippets
+    const flavorCards = document.querySelectorAll('.s_parallax .card, .s_three_columns .card');
 
     flavorCards.forEach(card => {
         const img = card.querySelector('.card-img-top');
