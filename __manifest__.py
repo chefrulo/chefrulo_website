@@ -24,6 +24,7 @@
             "chefrulo_website/static/src/js/menu_add_to_cart.js",
             "chefrulo_website/static/src/js/products_block_variants.js",
             "chefrulo_website/static/src/js/frozen_image_modal.js",
+            "chefrulo_website/static/src/js/dynamic_products_snippet.js",
         ],
     },
     "installable": True,

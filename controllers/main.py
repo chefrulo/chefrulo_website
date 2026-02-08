@@ -76,6 +76,49 @@ class WebsiteMenu(http.Controller):
         return request.render('chefrulo_website.menu_page', values)
 
 
+class WebsiteProductsAPI(http.Controller):
+    """JSON API for dynamic product snippets."""
+
+    @http.route('/shop/category/products/json', type='json', auth='public', website=True)
+    def get_category_products(self, category_id=None, category_name=None, limit=8, **kwargs):
+        """Return product templates (not variants) for a category as JSON."""
+        Product = request.env['product.template'].sudo()
+        Category = request.env['product.public.category'].sudo()
+        website = request.website
+
+        domain = [
+            ('is_published', '=', True),
+            ('sale_ok', '=', True),
+        ]
+
+        # Filter by category
+        if category_id:
+            domain.append(('public_categ_ids', 'in', [int(category_id)]))
+        elif category_name:
+            category = Category.search([('name', '=', category_name)], limit=1)
+            if category:
+                domain.append(('public_categ_ids', 'in', [category.id]))
+
+        products = Product.search(domain, limit=limit, order='name')
+
+        result = []
+        for product in products:
+            result.append({
+                'id': product.id,
+                'name': product.name,
+                'description': product.description_sale or '',
+                'price': product.list_price,
+                'currency_symbol': website.currency_id.symbol,
+                'currency_position': website.currency_id.position,
+                'image_url': f'/web/image/product.template/{product.id}/image_256',
+                'url': f'/shop/{product.id}',
+                'has_variants': product.product_variant_count > 1,
+                'variant_count': product.product_variant_count,
+            })
+
+        return result
+
+
 class WebsiteQuotation(http.Controller):
 
     @http.route('/shop/request_quotation', type='http', auth='public', website=True)

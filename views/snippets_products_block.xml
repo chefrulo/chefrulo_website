@@ -1,100 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <!-- Custom Products Block with Variant Support -->
-    <template id="s_products_block_with_variants" name="Products Block with Variants">
-        <section class="s_products_block pt32 pb32">
+    <!-- Dynamic Products by Category (loads product.template, not variants) -->
+    <template id="s_dynamic_products_templates" name="Products by Category (Grouped)">
+        <section class="s_dynamic_products_templates pt32 pb32"
+                 data-category-name="Frozen"
+                 data-limit="8">
             <div class="container">
-                <!-- Products Grid -->
-                <div class="row g-3 products-grid">
-                    <t t-foreach="products" t-as="product">
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="card h-100 product-card">
-                                <!-- Product Image -->
-                                <a t-attf-href="/shop/#{product.id}" class="position-relative overflow-hidden d-block bg-light" style="height: 250px;">
-                                    <img t-att-src="website.image_url(product, 'image_256')"
-                                         t-att-alt="product.name"
-                                         class="card-img-top h-100"
-                                         style="object-fit: cover;"/>
-                                </a>
-                                
-                                <div class="card-body d-flex flex-column">
-                                    <!-- Product Name -->
-                                    <h5 class="card-title mb-2">
-                                        <a t-attf-href="/shop/#{product.id}" 
-                                           class="text-decoration-none text-reset">
-                                            <t t-out="product.name"/>
-                                        </a>
-                                    </h5>
-                                    
-                                    <!-- Product Description -->
-                                    <p t-if="product.description_sale" 
-                                       class="card-text text-muted small flex-grow-1 mb-2"
-                                       t-out="product.description_sale"/>
-                                    
-                                    <!-- Price -->
-                                    <p class="mb-3">
-                                        <span class="fw-bold fs-5"
-                                              t-out="product.list_price"
-                                              t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                                    </p>
-                                    
-                                    <!-- Variants Section -->
-                                    <t t-if="product.product_variant_count > 1">
-                                        <!-- Has variants: Show selector and "View Options" button -->
-                                        <div class="mb-2">
-                                            <label class="form-label small fw-bold mb-1">Box Size:</label>
-                                            <select class="form-select form-select-sm variant-selector"
-                                                    t-att-data-product-id="product.id">
-                                                <option value="">Select size...</option>
-                                                <t t-foreach="product.product_variant_ids" t-as="variant">
-                                                    <t t-if="variant.active and variant.sale_ok">
-                                                        <option t-att-value="variant.id">
-                                                            <t t-out="variant.product_template_attribute_value_ids.name if variant.product_template_attribute_value_ids else variant.name"/>
-                                                        </option>
-                                                    </t>
-                                                </t>
-                                            </select>
-                                        </div>
-                                        <a t-attf-href="/shop/#{product.id}" class="btn btn-primary btn-sm w-100">
-                                            <i class="fa fa-arrow-right me-1"/>
-                                            View All Options
-                                        </a>
-                                    </t>
-                                    <t t-else="">
-                                        <!-- No variants: Show add to cart directly -->
-                                        <form class="js_products_block_add_to_cart d-flex gap-2 mt-auto">
-                                            <input type="number"
-                                                   class="form-control form-control-sm text-center"
-                                                   style="width: 60px;"
-                                                   name="add_qty"
-                                                   value="1"
-                                                   min="1"/>
-                                            <button type="button"
-                                                    class="btn btn-primary btn-sm flex-grow-1 js_products_cart_btn"
-                                                    t-att-data-product-id="product.product_variant_id.id">
-                                                <i class="fa fa-cart-plus me-1"/>
-                                                Add to Cart
-                                            </button>
-                                        </form>
-                                    </t>
-                                </div>
-                            </div>
-                        </div>
-                    </t>
+                <div class="products-container">
+                    <!-- Products will be loaded dynamically via JavaScript -->
+                    <div class="text-center py-5">
+                        <i class="fa fa-spinner fa-spin fa-2x text-muted"></i>
+                    </div>
                 </div>
             </div>
         </section>
     </template>
 
     <!-- Register as Website Builder Snippet -->
-    <template id="s_products_block_with_variants_snippet" 
-              inherit_id="website.snippets" 
-              name="Products Block with Variants Snippet">
+    <template id="s_dynamic_products_templates_snippet"
+              inherit_id="website.snippets"
+              name="Products by Category Snippet">
         <xpath expr="//div[@id='snippet_structure']/div[@class='o_panel_body']" position="inside">
-            <t t-snippet="chefrulo_website.s_products_block_with_variants"
-               t-thumbnail="/chefrulo_website/static/src/img/snippets/s_products_block.svg"
-               t-drop-near-relations="[&quot;.s_products_block&quot;]"/>
+            <t t-snippet="chefrulo_website.s_dynamic_products_templates"
+               t-thumbnail="/chefrulo_website/static/src/img/snippets/s_products_block.svg"/>
+        </xpath>
+    </template>
+
+    <!-- Snippet Options for customizing category and limit -->
+    <template id="s_dynamic_products_templates_options" inherit_id="website.snippet_options">
+        <xpath expr="." position="inside">
+            <div data-selector=".s_dynamic_products_templates">
+                <we-input string="Category Name"
+                          data-attribute-name="categoryName"
+                          data-set-attribute-on="section"
+                          data-attribute="data-category-name"/>
+                <we-input string="Max Products"
+                          data-attribute-name="limit"
+                          data-set-attribute-on="section"
+                          data-attribute="data-limit"/>
+            </div>
         </xpath>
     </template>
 
