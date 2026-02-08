@@ -158,20 +158,30 @@
                                         </div>
                                         <!-- Add to Cart -->
                                         <div class="col-auto">
-                                            <form class="js_menu_add_to_cart d-flex align-items-center gap-2">
-                                                <input type="number"
-                                                       class="form-control form-control-sm text-center"
-                                                       style="width: 70px;"
-                                                       name="add_qty"
-                                                       value="1"
-                                                       min="1"/>
-                                                <button type="button"
-                                                        class="btn btn-primary btn-sm js_menu_cart_btn"
-                                                        t-att-data-product-id="product.product_variant_id.id">
-                                                    <i class="fa fa-cart-plus me-1"/>
-                                                    Add
-                                                </button>
-                                            </form>
+                                            <t t-if="product.product_variant_count == 1">
+                                                <!-- No variants: show add to cart directly -->
+                                                <form class="js_menu_add_to_cart d-flex align-items-center gap-2">
+                                                    <input type="number"
+                                                           class="form-control form-control-sm text-center"
+                                                           style="width: 70px;"
+                                                           name="add_qty"
+                                                           value="1"
+                                                           min="1"/>
+                                                    <button type="button"
+                                                            class="btn btn-primary btn-sm js_menu_cart_btn"
+                                                            t-att-data-product-id="product.product_variant_id.id">
+                                                        <i class="fa fa-cart-plus me-1"/>
+                                                        Add
+                                                    </button>
+                                                </form>
+                                            </t>
+                                            <t t-else="">
+                                                <!-- Has variants: link to product page -->
+                                                <a t-attf-href="/shop/#{product.id}" class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-arrow-right me-1"/>
+                                                    View Options
+                                                </a>
+                                            </t>
                                         </div>
                                     </div>
                                 </t>
