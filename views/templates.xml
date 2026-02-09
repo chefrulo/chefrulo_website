@@ -265,15 +265,15 @@
     <template id="product_price_with_discount"
               inherit_id="website_sale.product_price"
               name="Product Price with Discount Badge">
-        <!-- Replace the del element to remove group restriction and add discount badge -->
-        <xpath expr="//h3[hasclass('css_editable_mode_hidden')]/del" position="replace">
+        <!-- Add discount info after the price span -->
+        <xpath expr="//h3[hasclass('css_editable_mode_hidden')]/span[hasclass('oe_price')]" position="after">
             <t t-if="combination_info.get('compare_list_price') and combination_info['compare_list_price'] > combination_info['price']">
-                <del class="text-muted ms-2 h5">
+                <del class="text-muted ms-2 h5" style="white-space: nowrap;">
                     <span t-esc="combination_info['compare_list_price']"
                           t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
                 </del>
                 <t t-set="discount_pct" t-value="round((1 - combination_info['price'] / combination_info['compare_list_price']) * 100)"/>
-                <span class="badge text-success ms-2" style="font-size: 0.9rem;" t-esc="'%d%% off' % discount_pct"/>
+                <span class="text-success ms-2" style="font-size: 0.9rem; font-weight: 500;" t-esc="'%d%% off' % discount_pct"/>
             </t>
         </xpath>
     </template>
