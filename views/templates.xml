@@ -261,23 +261,7 @@
         </xpath>
     </template>
 
-    <!-- Show compare_list_price (strikethrough) and discount badge on product page -->
-    <template id="product_price_with_discount"
-              inherit_id="website_sale.product_price"
-              name="Product Price with Discount Badge">
-        <!-- Add discount info after the main price h3 -->
-        <xpath expr="//div[hasclass('product_price')]/h3[1]" position="after">
-            <div t-if="combination_info.get('compare_list_price') and combination_info['compare_list_price'] > combination_info['price']"
-                 class="d-flex align-items-center gap-2 mt-1">
-                <del class="text-muted h5 mb-0">
-                    <span t-esc="combination_info['compare_list_price']"
-                          t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                </del>
-                <t t-set="discount_pct" t-value="round((1 - combination_info['price'] / combination_info['compare_list_price']) * 100)"/>
-                <span class="text-success" style="font-size: 1rem; font-weight: 500;" t-esc="'%d%% off' % discount_pct"/>
-            </div>
-        </xpath>
-    </template>
+    <!-- Discount badge is handled by product_page_discount.js -->
 
     <!-- Hide variant price extra badges (e.g., "+ £36.00") -->
     <template id="badge_extra_price_hidden"
