@@ -263,6 +263,15 @@
 
     <!-- Discount badge is handled by product_page_discount.js -->
 
+    <!-- Remove Terms and Conditions / money-back / shipping text from product page -->
+    <template id="product_custom_text_hidden"
+              inherit_id="website_sale.product_custom_text"
+              name="Hide Product Terms Text">
+        <xpath expr="//p[hasclass('text-muted')]" position="replace">
+            <!-- Empty - removed default terms text -->
+        </xpath>
+    </template>
+
     <!-- Hide variant price extra badges (e.g., "+ £36.00") -->
     <template id="badge_extra_price_hidden"
               inherit_id="website_sale.badge_extra_price"
