@@ -290,12 +290,15 @@
         </xpath>
     </template>
 
-    <!-- Change "All Products" breadcrumb to link to /frozen -->
-    <template id="product_breadcrumb_frozen"
+    <!-- Change "All Products" breadcrumb based on product category -->
+    <template id="product_breadcrumb_dynamic"
               inherit_id="website_sale.product"
-              name="Breadcrumb to Frozen Page">
+              name="Dynamic Breadcrumb by Category">
         <xpath expr="//ol[hasclass('breadcrumb')]/li[1]/a" position="replace">
-            <a href="/frozen">All Products</a>
+            <t t-set="product_categories" t-value="product.public_categ_ids.mapped('name')"/>
+            <t t-set="has_catering" t-value="'Catering' in product_categories or any('Catering' in (c.parent_id.name or '') for c in product.public_categ_ids)"/>
+            <a t-if="has_catering" href="/catering">Catering</a>
+            <a t-else="" href="/frozen">All Products</a>
         </xpath>
     </template>
 
