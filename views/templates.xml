@@ -261,6 +261,15 @@
         </xpath>
     </template>
 
+    <!-- Hide variant price extra badges (e.g., "+ £36.00") -->
+    <template id="badge_extra_price_hidden"
+              inherit_id="website_sale.badge_extra_price"
+              name="Hide Extra Price Badge">
+        <xpath expr="//span[hasclass('badge')]" position="replace">
+            <!-- Empty - don't show extra price on variants -->
+        </xpath>
+    </template>
+
     <!-- Move product description_sale to the end of the product page -->
     <template id="product_description_bottom"
               inherit_id="website_sale.product"
