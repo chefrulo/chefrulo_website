@@ -61,7 +61,7 @@ function renderProducts(container, products) {
         html += `
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="card h-100 product-template-card">
-                    <a href="${product.url}" class="d-block overflow-hidden" style="height: 200px;">
+                    <a href="${product.url}" class="d-block overflow-hidden" style="height: 260px;">
                         <img src="${product.image_url}"
                              alt="${product.name}"
                              class="card-img-top h-100 w-100"
