@@ -26,6 +26,7 @@
             "chefrulo_website/static/src/js/products_block_variants.js",
             "chefrulo_website/static/src/js/frozen_image_modal.js",
             "chefrulo_website/static/src/js/dynamic_products_snippet.js",
+            "chefrulo_website/static/src/js/product_page_discount.js",
         ],
     },
     "installable": True,
