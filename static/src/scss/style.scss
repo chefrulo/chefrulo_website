@@ -171,3 +171,13 @@ html[data-view-xmlid="website.frozen"] {
         }
     }
 }
+
+// ========================================
+// Product Detail Page Customizations
+// ========================================
+.o_wsale_product_page {
+    // Hide search bar on product detail page
+    .o_wsale_products_searchbar_form {
+        display: none !important;
+    }
+}

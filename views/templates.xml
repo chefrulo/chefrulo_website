@@ -290,24 +290,11 @@
         </xpath>
     </template>
 
-    <!-- Hide search bar on product detail page -->
-    <template id="product_hide_search"
-              inherit_id="website_sale.product"
-              name="Hide Search on Product Page">
-        <xpath expr="//t[@t-if=\"is_view_active('website_sale.search')\"]" position="replace">
-            <!-- Search removed from product page -->
-        </xpath>
-    </template>
-
     <!-- Change "All Products" breadcrumb to link to /frozen -->
     <template id="product_breadcrumb_frozen"
               inherit_id="website_sale.product"
               name="Breadcrumb to Frozen Page">
-        <xpath expr="//ol[hasclass('breadcrumb')]//a[@t-att-href='keep(category=0)']" position="attributes">
-            <attribute name="t-att-href"/>
-            <attribute name="href">/frozen</attribute>
-        </xpath>
-        <xpath expr="//ol[hasclass('breadcrumb')]//a[@href='/frozen']" position="replace">
+        <xpath expr="//ol[hasclass('breadcrumb')]/li[1]/a" position="replace">
             <a href="/frozen">All Products</a>
         </xpath>
     </template>
