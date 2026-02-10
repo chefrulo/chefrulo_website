@@ -1,34 +1,25 @@
 /** @odoo-module **/
 
-// Image modal for frozen page - click on FLAVOR cards (inside parallax) to see larger image
-// Does NOT apply to product cards
+// Image modal popup - click on images with popup="true" attribute to see larger version
+// Works anywhere on the site - just add popup="true" to any image
 
-function initFrozenImageModal() {
-    const path = window.location.pathname;
-    const htmlEl = document.querySelector('html');
-    const viewXmlid = htmlEl ? htmlEl.getAttribute('data-view-xmlid') : null;
-
-    // Only run on frozen page
-    if (path !== '/frozen' && viewXmlid !== 'website.frozen') {
-        return;
-    }
-
+function initImagePopupModal() {
     // Check if modal already exists
-    if (document.getElementById('frozenImageModal')) {
+    if (document.getElementById('imagePopupModal')) {
         return;
     }
 
     // Create modal HTML
     const modalHTML = `
-        <div class="modal fade" id="frozenImageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="imagePopupModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content bg-dark border-0">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title text-white" id="frozenImageModalTitle"></h5>
+                        <h5 class="modal-title text-white" id="imagePopupModalTitle"></h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center p-4">
-                        <img id="frozenImageModalImg" src="" alt="" class="img-fluid rounded" style="max-height: 70vh;">
+                        <img id="imagePopupModalImg" src="" alt="" class="img-fluid rounded" style="max-height: 70vh;">
                     </div>
                 </div>
             </div>
@@ -39,45 +30,72 @@ function initFrozenImageModal() {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
     // Get modal elements
-    const modalElement = document.getElementById('frozenImageModal');
-    const modalImg = document.getElementById('frozenImageModalImg');
-    const modalTitle = document.getElementById('frozenImageModalTitle');
+    const modalElement = document.getElementById('imagePopupModal');
+    const modalImg = document.getElementById('imagePopupModalImg');
+    const modalTitle = document.getElementById('imagePopupModalTitle');
 
-    // Target flavor cards in parallax OR three_columns sections
-    // NOT product cards from dynamic snippets
-    const flavorCards = document.querySelectorAll('.s_parallax .card, .s_three_columns .card');
+    // Attach click handlers to popup images
+    function attachPopupHandlers() {
+        // Find all images with popup="true" attribute
+        const popupImages = document.querySelectorAll('img[popup="true"]');
 
-    flavorCards.forEach(card => {
-        const img = card.querySelector('.card-img-top');
-        if (!img) return;
+        popupImages.forEach(img => {
+            // Skip if already initialized
+            if (img._popupInitialized) return;
+            img._popupInitialized = true;
 
-        // Skip if card has a link that goes to /shop (it's a product)
-        const shopLink = card.querySelector('a[href*="/shop/"]');
-        if (shopLink) return;
+            // Make image clickable
+            img.style.cursor = 'pointer';
 
-        // Make card clickable
-        card.style.cursor = 'pointer';
+            img.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-        card.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+                // Try to find a title from nearby elements
+                const container = img.closest('.card, .col, div');
+                const titleEl = container ? container.querySelector('.card-title, h1, h2, h3, h4, h5, h6') : null;
+                const title = titleEl ? titleEl.textContent.trim() : (img.alt || '');
 
-            const title = card.querySelector('.card-title, h5, h4, h3');
+                modalImg.src = img.src;
+                modalImg.alt = img.alt || '';
+                modalTitle.textContent = title;
 
-            modalImg.src = img.src;
-            modalImg.alt = img.alt || '';
-            modalTitle.textContent = title ? title.textContent.trim() : '';
-
-            // Show modal using jQuery
-            $(modalElement).modal('show');
+                // Show modal using Bootstrap
+                $(modalElement).modal('show');
+            });
         });
+    }
+
+    // Initial attachment
+    attachPopupHandlers();
+
+    // Watch for dynamically added images (for Website Builder and dynamic content)
+    const observer = new MutationObserver(function(mutations) {
+        let hasNewImages = false;
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes.length) {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) { // Element node
+                        if (node.matches && node.matches('img[popup="true"]')) {
+                            hasNewImages = true;
+                        } else if (node.querySelector && node.querySelector('img[popup="true"]')) {
+                            hasNewImages = true;
+                        }
+                    }
+                });
+            }
+        });
+        if (hasNewImages) {
+            attachPopupHandlers();
+        }
     });
+
+    observer.observe(document.body, { childList: true, subtree: true });
 }
 
-// With @odoo-module, DOMContentLoaded has already fired
-// So we run immediately with a small delay to ensure page is fully rendered
+// Initialize on DOM ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFrozenImageModal);
+    document.addEventListener('DOMContentLoaded', initImagePopupModal);
 } else {
-    setTimeout(initFrozenImageModal, 100);
+    setTimeout(initImagePopupModal, 100);
 }
