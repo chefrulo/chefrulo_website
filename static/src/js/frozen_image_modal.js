@@ -1,7 +1,15 @@
 /** @odoo-module **/
 
-// Image modal popup - click on images with "popup-image" class to see larger version
-// Works anywhere on the site - just add the class "popup-image" to any image
+// Image modal popup - click on flavor images to see larger version
+// Targets images by filename (beef, humita, caprese, etc.)
+
+// Flavor image filenames to target
+const FLAVOR_IMAGES = ['beef', 'humita', 'ham-and-cheese', 'caprese', 'pulled', 'mushroom'];
+
+function isFlavorImage(img) {
+    const src = (img.src || '').toLowerCase();
+    return FLAVOR_IMAGES.some(flavor => src.includes(flavor));
+}
 
 function initImagePopupModal() {
     // Check if modal already exists
@@ -36,8 +44,9 @@ function initImagePopupModal() {
 
     // Attach click handlers to popup images
     function attachPopupHandlers() {
-        // Find all images with "popup-image" class
-        const popupImages = document.querySelectorAll('img.popup-image');
+        // Find all images and filter by flavor filename
+        const allImages = document.querySelectorAll('img');
+        const popupImages = Array.from(allImages).filter(isFlavorImage);
 
         popupImages.forEach(img => {
             // Skip if already initialized
@@ -76,10 +85,13 @@ function initImagePopupModal() {
             if (mutation.addedNodes.length) {
                 mutation.addedNodes.forEach(node => {
                     if (node.nodeType === 1) { // Element node
-                        if (node.matches && node.matches('img.popup-image')) {
+                        if (node.tagName === 'IMG' && isFlavorImage(node)) {
                             hasNewImages = true;
-                        } else if (node.querySelector && node.querySelector('img.popup-image')) {
-                            hasNewImages = true;
+                        } else if (node.querySelector) {
+                            const imgs = node.querySelectorAll('img');
+                            if (Array.from(imgs).some(isFlavorImage)) {
+                                hasNewImages = true;
+                            }
                         }
                     }
                 });
