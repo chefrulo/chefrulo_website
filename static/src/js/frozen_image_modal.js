@@ -2,7 +2,20 @@
 
 // Image modal popup - click on images with class "o_popup_image" to see larger version
 
+function isEditMode() {
+    // Check if we're in Website Builder edit mode
+    return document.body.classList.contains('editor_enable') ||
+           document.body.classList.contains('o_is_editing') ||
+           document.querySelector('html').classList.contains('o_website_edit') ||
+           document.getElementById('oe_main_menu_navbar') !== null;
+}
+
 function initImagePopupModal() {
+    // Don't initialize popup in edit mode
+    if (isEditMode()) {
+        return;
+    }
+
     // Check if modal already exists
     if (document.getElementById('imagePopupModal')) {
         return;
@@ -47,6 +60,11 @@ function initImagePopupModal() {
             img.style.cursor = 'pointer';
 
             img.addEventListener('click', function(e) {
+                // Don't trigger popup in edit mode
+                if (isEditMode()) {
+                    return;
+                }
+
                 e.preventDefault();
                 e.stopPropagation();
 
