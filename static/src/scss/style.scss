@@ -123,9 +123,10 @@ body[data-website-id="3"] h3 {
 // ========================================
 .s_steps_overlay {
     position: relative;
-    margin-top: -150px;
+    margin-top: -250px;
     z-index: 10;
     padding: 0 20px;
+    padding-bottom: 40px;
 
     .steps-container {
         max-width: 1200px;
