@@ -357,9 +357,9 @@
         </section>
     </template>
 
-    <!-- Register Steps Overlay as a Website Builder Snippet -->
+    <!-- Register Steps Overlay as Inner Content Snippet -->
     <template id="steps_overlay_snippet" inherit_id="website.snippets" name="Steps Overlay Snippet">
-        <xpath expr="//div[@id='snippet_structure']/div[@class='o_panel_body']" position="inside">
+        <xpath expr="//div[@id='snippet_content']/div[@class='o_panel_body']" position="inside">
             <t t-snippet="chefrulo_website.s_steps_overlay"
                t-thumbnail="/chefrulo_website/static/src/img/snippets/s_steps_overlay.svg"/>
         </xpath>
