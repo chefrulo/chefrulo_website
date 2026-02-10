@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-// Image modal popup - click on images with popup="true" attribute to see larger version
-// Works anywhere on the site - just add popup="true" to any image
+// Image modal popup - click on images with "popup-image" class to see larger version
+// Works anywhere on the site - just add the class "popup-image" to any image
 
 function initImagePopupModal() {
     // Check if modal already exists
@@ -36,8 +36,8 @@ function initImagePopupModal() {
 
     // Attach click handlers to popup images
     function attachPopupHandlers() {
-        // Find all images with popup="true" attribute
-        const popupImages = document.querySelectorAll('img[popup="true"]');
+        // Find all images with "popup-image" class
+        const popupImages = document.querySelectorAll('img.popup-image');
 
         popupImages.forEach(img => {
             // Skip if already initialized
@@ -76,9 +76,9 @@ function initImagePopupModal() {
             if (mutation.addedNodes.length) {
                 mutation.addedNodes.forEach(node => {
                     if (node.nodeType === 1) { // Element node
-                        if (node.matches && node.matches('img[popup="true"]')) {
+                        if (node.matches && node.matches('img.popup-image')) {
                             hasNewImages = true;
-                        } else if (node.querySelector && node.querySelector('img[popup="true"]')) {
+                        } else if (node.querySelector && node.querySelector('img.popup-image')) {
                             hasNewImages = true;
                         }
                     }
