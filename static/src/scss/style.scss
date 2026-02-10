@@ -76,6 +76,28 @@ body[data-website-id="3"] h3 {
     }
 }
 
+// ========================================
+// Manual class for hero overlay effect
+// Add class "o_hero_overlay" to any section to get the dark overlay with transparent cards
+// ========================================
+.o_hero_overlay {
+    position: relative;
+    margin-top: -150px;
+    z-index: 10;
+
+    // Dark semi-transparent container
+    > .container,
+    > .container-fluid,
+    > .o_container_small {
+        background: rgba(0, 0, 0, 0.75);
+        border-radius: 20px;
+        padding: 40px 30px;
+        backdrop-filter: blur(8px);
+    }
+
+    @include transparent-cards-overlay;
+}
+
 // Apply to s_three_columns inside parallax
 .s_parallax .s_three_columns,
 .s_parallax + .s_three_columns {
