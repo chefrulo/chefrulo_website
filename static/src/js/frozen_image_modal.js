@@ -1,15 +1,6 @@
 /** @odoo-module **/
 
-// Image modal popup - click on flavor images to see larger version
-// Targets images by filename (beef, humita, caprese, etc.)
-
-// Flavor image filenames to target
-const FLAVOR_IMAGES = ['beef', 'humita', 'ham-and-cheese', 'caprese', 'pulled', 'mushroom'];
-
-function isFlavorImage(img) {
-    const src = (img.src || '').toLowerCase();
-    return FLAVOR_IMAGES.some(flavor => src.includes(flavor));
-}
+// Image modal popup - click on images with class "o_popup_image" to see larger version
 
 function initImagePopupModal() {
     // Check if modal already exists
@@ -44,9 +35,8 @@ function initImagePopupModal() {
 
     // Attach click handlers to popup images
     function attachPopupHandlers() {
-        // Find all images and filter by flavor filename
-        const allImages = document.querySelectorAll('img');
-        const popupImages = Array.from(allImages).filter(isFlavorImage);
+        // Find all images with the o_popup_image class
+        const popupImages = document.querySelectorAll('img.o_popup_image');
 
         popupImages.forEach(img => {
             // Skip if already initialized
@@ -60,10 +50,13 @@ function initImagePopupModal() {
                 e.preventDefault();
                 e.stopPropagation();
 
-                // Try to find a title from nearby elements
-                const container = img.closest('.card, .col, div');
-                const titleEl = container ? container.querySelector('.card-title, h1, h2, h3, h4, h5, h6') : null;
-                const title = titleEl ? titleEl.textContent.trim() : (img.alt || '');
+                // Get title from data attribute or nearby elements
+                let title = img.dataset.popupTitle || '';
+                if (!title) {
+                    const container = img.closest('.card, .col, div');
+                    const titleEl = container ? container.querySelector('.card-title, h1, h2, h3, h4, h5, h6') : null;
+                    title = titleEl ? titleEl.textContent.trim() : (img.alt || '');
+                }
 
                 modalImg.src = img.src;
                 modalImg.alt = img.alt || '';
@@ -85,11 +78,10 @@ function initImagePopupModal() {
             if (mutation.addedNodes.length) {
                 mutation.addedNodes.forEach(node => {
                     if (node.nodeType === 1) { // Element node
-                        if (node.tagName === 'IMG' && isFlavorImage(node)) {
+                        if (node.tagName === 'IMG' && node.classList.contains('o_popup_image')) {
                             hasNewImages = true;
                         } else if (node.querySelector) {
-                            const imgs = node.querySelectorAll('img');
-                            if (Array.from(imgs).some(isFlavorImage)) {
+                            if (node.querySelector('img.o_popup_image')) {
                                 hasNewImages = true;
                             }
                         }

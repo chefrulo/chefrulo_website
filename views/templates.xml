@@ -319,4 +319,32 @@
         </xpath>
     </template>
 
+    <!-- ========================================
+         Image with Popup Snippet
+         ======================================== -->
+    <template id="s_image_popup" name="Image with Popup">
+        <section class="s_image_popup pt16 pb16">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 text-center">
+                        <img class="o_popup_image img-fluid rounded"
+                             src="/web/image/website.library_image_08"
+                             alt="Click to enlarge"
+                             data-popup-title="Image Title"
+                             style="cursor: pointer;"/>
+                        <p class="mt-2 text-muted small">Click image to enlarge</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Register Image Popup as a Website Builder Snippet -->
+    <template id="image_popup_snippet" inherit_id="website.snippets" name="Image Popup Snippet">
+        <xpath expr="//div[@id='snippet_structure']/div[@class='o_panel_body']" position="inside">
+            <t t-snippet="chefrulo_website.s_image_popup"
+               t-thumbnail="/chefrulo_website/static/src/img/snippets/s_image_popup.svg"/>
+        </xpath>
+    </template>
+
 </odoo>
