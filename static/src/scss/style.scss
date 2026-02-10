@@ -52,6 +52,30 @@ body[data-website-id="3"] h3 {
     @include transparent-cards-overlay;
 }
 
+// Apply transparent style to individual cards with bg-black-* classes
+.s_three_columns .card.bg-black-25,
+.s_three_columns .card.bg-black-50,
+.s_three_columns .card.bg-o-color-1 {
+    --bs-bg-opacity: 0 !important;
+    --bs-card-bg: transparent !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+
+    .card-body {
+        background: transparent !important;
+    }
+
+    h1, h2, h3, h4, h5, h6, .card-title {
+        color: #fff !important;
+    }
+
+    p, .card-text {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+}
+
 // Apply to s_three_columns inside parallax
 .s_parallax .s_three_columns,
 .s_parallax + .s_three_columns {
