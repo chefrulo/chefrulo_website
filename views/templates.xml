@@ -323,7 +323,7 @@
          Steps Overlay Snippet (Pick, Get, Bake)
          ======================================== -->
     <template id="s_steps_overlay" name="Steps Overlay">
-        <section class="s_steps_overlay">
+        <div class="s_steps_overlay oe_structure_solo" data-snippet="s_steps_overlay" data-name="Steps Overlay">
             <div class="steps-container">
                 <div class="steps-row">
                     <!-- Step 1 -->
@@ -354,7 +354,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </template>
 
     <!-- Register Steps Overlay as Inner Content Snippet -->
