@@ -106,8 +106,8 @@
                 <!-- Editable zone: above header (hero, banners, etc.) -->
                 <div id="menu_top" class="oe_structure"/>
 
-                <!-- Header -->
-                <div class="container py-5 text-center">
+                <!-- Header (hidden on catering page) -->
+                <div t-if="not is_catering" class="container py-5 text-center">
                     <h1 class="display-4 fw-bold">Our Menu</h1>
                     <p class="lead text-muted">Browse our selection and add items to your cart</p>
                 </div>

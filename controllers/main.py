@@ -72,6 +72,7 @@ class WebsiteMenu(http.Controller):
 
         values = {
             'menu_data': menu_data,
+            'is_catering': category_filter == 'Catering',
         }
         return request.render('chefrulo_website.menu_page', values)
 
