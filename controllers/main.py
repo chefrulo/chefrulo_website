@@ -4,11 +4,6 @@ from odoo.http import request
 
 class WebsiteMenu(http.Controller):
 
-    @http.route('/menu', type='http', auth='public', website=True)
-    def menu_page(self, **post):
-        """Display a catalog/menu page with all categories and products."""
-        return self._render_menu_page()
-
     @http.route('/catering', type='http', auth='public', website=True)
     def catering_page(self, **post):
         """Display only Catering category and its subcategories/products."""
