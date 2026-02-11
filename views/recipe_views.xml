@@ -5,7 +5,7 @@
     <record id="view_recipe_form_website" model="ir.ui.view">
         <field name="name">recipe.recipe.form.website</field>
         <field name="model">recipe.recipe</field>
-        <field name="inherit_id" ref="chefrulo_recipe.view_recipe_form"/>
+        <field name="inherit_id" ref="chefrulo_recipe.view_recipe_recipe_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='active']" position="after">
                 <field name="is_published"/>
@@ -20,7 +20,7 @@
     <record id="view_recipe_tree_website" model="ir.ui.view">
         <field name="name">recipe.recipe.tree.website</field>
         <field name="model">recipe.recipe</field>
-        <field name="inherit_id" ref="chefrulo_recipe.view_recipe_tree"/>
+        <field name="inherit_id" ref="chefrulo_recipe.view_recipe_recipe_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='category_id']" position="after">
                 <field name="is_published" string="Published"/>
@@ -32,7 +32,7 @@
     <record id="view_recipe_search_website" model="ir.ui.view">
         <field name="name">recipe.recipe.search.website</field>
         <field name="model">recipe.recipe</field>
-        <field name="inherit_id" ref="chefrulo_recipe.view_recipe_search"/>
+        <field name="inherit_id" ref="chefrulo_recipe.view_recipe_recipe_search"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='inactive']" position="after">
                 <separator/>
