@@ -231,3 +231,23 @@ body[data-website-id="3"] h3 {
         display: none !important;
     }
 }
+
+// ========================================
+// Catering Quote Mode - Hide payment buttons
+// ========================================
+// When quote mode is active, hide Google Pay and other express payment buttons
+.o_catering_quote_mode ~ .ElementsApp,
+.o_catering_quote_mode ~ div .ElementsApp,
+.o_catering_quote_mode + .ElementsApp {
+    display: none !important;
+}
+
+// Also hide using :has() for broader browser support
+body:has(.o_catering_quote_mode) {
+    .ElementsApp,
+    .GooglePayButton,
+    [class*="express-checkout"],
+    .o_express_checkout_form {
+        display: none !important;
+    }
+}

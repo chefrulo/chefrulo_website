@@ -6,7 +6,7 @@
               inherit_id="website_sale.navigation_buttons"
               name="Request Quote Button">
         <xpath expr="//a[@name='website_sale_main_button']" position="after">
-            <t t-if="xmlid == 'website_sale.cart' and website_sale_order.has_catering_products">
+            <div t-if="xmlid == 'website_sale.cart' and website_sale_order.has_catering_products" class="o_catering_quote_mode">
                 <a role="button"
                    t-attf-class="btn btn-primary w-100 mt-2 #{not website_sale_order._is_cart_ready() and 'disabled'}"
                    href="/shop/request_quotation">
@@ -16,7 +16,7 @@
                 <p class="text-muted small text-center mt-2 mb-0">
                     Catering orders require a quote request.
                 </p>
-            </t>
+            </div>
         </xpath>
         <!-- Hide the main checkout button when cart has catering products -->
         <xpath expr="//a[@name='website_sale_main_button']" position="attributes">
