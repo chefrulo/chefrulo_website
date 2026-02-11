@@ -4,6 +4,11 @@ from odoo.http import request
 
 class WebsiteMenu(http.Controller):
 
+    @http.route(['/shop', '/shop/'], type='http', auth='public', website=True)
+    def shop_redirect(self, **post):
+        """Redirect /shop to /catering."""
+        return request.redirect('/catering', code=301)
+
     @http.route('/catering', type='http', auth='public', website=True)
     def catering_page(self, **post):
         """Display only Catering category and its subcategories/products."""
