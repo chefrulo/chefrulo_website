@@ -3,3 +3,4 @@ from . import res_config_settings
 from . import website_snippet_filter
 from . import sale_order
 from . import recipe
+from . import res_country
