@@ -34,7 +34,7 @@
         <field name="model">recipe.recipe</field>
         <field name="inherit_id" ref="chefrulo_recipe.view_recipe_recipe_search"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='inactive']" position="after">
+            <xpath expr="//filter[@name='archived']" position="after">
                 <separator/>
                 <filter name="published" string="Published on Website" domain="[('is_published', '=', True)]"/>
                 <filter name="not_published" string="Not Published" domain="[('is_published', '=', False)]"/>
