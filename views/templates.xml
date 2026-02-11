@@ -1,41 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <!-- Add "Request Quote" button on the cart page -->
+    <!-- Add "Request Quote" button on the cart page (only for Catering products) -->
     <template id="cart_request_quote_button"
               inherit_id="website_sale.navigation_buttons"
               name="Request Quote Button">
         <xpath expr="//a[@name='website_sale_main_button']" position="after">
-            <t t-if="xmlid == 'website_sale.cart' and website.enable_request_quote">
+            <t t-if="xmlid == 'website_sale.cart' and website_sale_order.has_catering_products">
                 <a role="button"
-                   t-attf-class="btn btn-secondary w-100 mt-2 #{not website_sale_order._is_cart_ready() and 'disabled'}"
+                   t-attf-class="btn btn-primary w-100 mt-2 #{not website_sale_order._is_cart_ready() and 'disabled'}"
                    href="/shop/request_quotation">
                     <i class="fa fa-file-text-o me-2"/>
                     Request a Quote
                 </a>
+                <p class="text-muted small text-center mt-2 mb-0">
+                    Catering orders require a quote request.
+                </p>
             </t>
+        </xpath>
+        <!-- Hide the main checkout button when cart has catering products -->
+        <xpath expr="//a[@name='website_sale_main_button']" position="attributes">
+            <attribute name="t-if">not website_sale_order.has_catering_products</attribute>
         </xpath>
     </template>
 
-    <!-- Add "Request Quote" button on the payment page -->
+    <!-- Redirect to quote for catering products on payment page -->
     <template id="payment_request_quote_button"
               inherit_id="website_sale.payment"
               name="Request Quote on Payment Page">
+        <!-- If cart has catering products, show quote option instead of payment -->
         <xpath expr="//t[@name='website_sale_non_free_cart']" position="before">
-            <div t-if="website.enable_request_quote" class="card mb-3">
-                <div class="card-body text-center">
-                    <p class="mb-2 fw-bold">Don't want to pay now?</p>
-                    <a role="button"
-                       class="btn btn-secondary"
-                       href="/shop/request_quotation">
-                        <i class="fa fa-file-text-o me-2"/>
-                        Request a Quote Instead
-                    </a>
-                    <p class="text-muted small mt-2 mb-0">
-                        We will send you a formal quotation by email.
-                    </p>
+            <t t-if="website_sale_order.has_catering_products">
+                <div class="card mb-3 border-primary">
+                    <div class="card-body text-center">
+                        <h5 class="mb-3">Catering Order</h5>
+                        <p class="mb-3">Catering orders require a quote request. We will contact you to confirm details and pricing.</p>
+                        <a role="button"
+                           class="btn btn-primary btn-lg"
+                           href="/shop/request_quotation">
+                            <i class="fa fa-file-text-o me-2"/>
+                            Request a Quote
+                        </a>
+                    </div>
                 </div>
-            </div>
+            </t>
+        </xpath>
+        <!-- Hide payment options for catering orders -->
+        <xpath expr="//t[@name='website_sale_non_free_cart']" position="attributes">
+            <attribute name="t-if">not website_sale_order.has_catering_products</attribute>
         </xpath>
     </template>
 
