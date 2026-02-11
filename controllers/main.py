@@ -1,3 +1,4 @@
+import base64
 from odoo import http
 from odoo.http import request
 
@@ -185,6 +186,29 @@ class WebsiteQuotation(http.Controller):
 
 class WebsiteRecipes(http.Controller):
     """Public recipes page."""
+
+    @http.route('/recipes/image/<int:recipe_id>', type='http', auth='public', website=True)
+    def recipe_image(self, recipe_id, **post):
+        """Serve recipe image publicly for published recipes."""
+        recipe = request.env['recipe.recipe'].sudo().browse(recipe_id)
+        if not recipe.exists() or not recipe.is_published or not recipe.active:
+            # Return a placeholder or 404
+            return request.not_found()
+
+        if not recipe.image:
+            return request.not_found()
+
+        # Decode base64 image data
+        image_data = base64.b64decode(recipe.image)
+
+        # Return the image
+        return request.make_response(
+            image_data,
+            headers=[
+                ('Content-Type', 'image/png'),
+                ('Cache-Control', 'public, max-age=86400'),
+            ]
+        )
 
     @http.route('/recipes', type='http', auth='public', website=True)
     def recipes_list(self, category=None, **post):

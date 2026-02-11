@@ -400,7 +400,7 @@
                                 <a t-attf-href="/recipes/#{recipe.id}" class="text-decoration-none">
                                     <div class="card h-100 shadow-sm recipe-card">
                                         <t t-if="recipe.image">
-                                            <img t-att-src="'/web/image/recipe.recipe/%s/image' % recipe.id"
+                                            <img t-att-src="'/recipes/image/%s' % recipe.id"
                                                  class="card-img-top"
                                                  t-att-alt="recipe.name"
                                                  style="height: 200px; object-fit: cover;"/>
@@ -471,7 +471,7 @@
                         <!-- Recipe image -->
                         <div class="col-lg-5 mb-4">
                             <t t-if="recipe.image">
-                                <img t-att-src="'/web/image/recipe.recipe/%s/image' % recipe.id"
+                                <img t-att-src="'/recipes/image/%s' % recipe.id"
                                      class="img-fluid rounded shadow"
                                      t-att-alt="recipe.name"/>
                             </t>
