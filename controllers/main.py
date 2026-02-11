@@ -9,6 +9,16 @@ class WebsiteMenu(http.Controller):
         """Redirect /shop to /catering."""
         return request.redirect('/catering', code=301)
 
+    @http.route(['/shop/payment'], type='http', auth='public', website=True)
+    def shop_payment_catering_redirect(self, **post):
+        """Redirect catering orders to quote page instead of payment."""
+        order = request.website.sale_get_order()
+        if order and order.has_catering_products:
+            return request.redirect('/shop/request_quotation')
+        # For non-catering orders, let the original controller handle it
+        from odoo.addons.website_sale.controllers.main import WebsiteSale
+        return WebsiteSale().shop_payment(**post)
+
     @http.route('/catering', type='http', auth='public', website=True)
     def catering_page(self, **post):
         """Display only Catering category and its subcategories/products."""
