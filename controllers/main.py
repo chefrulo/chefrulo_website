@@ -181,3 +181,46 @@ class WebsiteQuotation(http.Controller):
             'order': order,
         }
         return request.render('chefrulo_website.quotation_confirmation', values)
+
+
+class WebsiteRecipes(http.Controller):
+    """Public recipes page."""
+
+    @http.route('/recipes', type='http', auth='public', website=True)
+    def recipes_list(self, category=None, **post):
+        """Display list of published recipes."""
+        Recipe = request.env['recipe.recipe'].sudo()
+        Category = request.env['recipe.category'].sudo()
+
+        # Get published recipes
+        domain = [('is_published', '=', True), ('active', '=', True)]
+        if category:
+            cat = Category.search([('name', 'ilike', category)], limit=1)
+            if cat:
+                domain.append(('category_id', '=', cat.id))
+
+        recipes = Recipe.search(domain, order='name')
+
+        # Get categories that have published recipes
+        categories = Category.search([
+            ('id', 'in', recipes.mapped('category_id').ids)
+        ], order='name')
+
+        values = {
+            'recipes': recipes,
+            'categories': categories,
+            'current_category': category,
+        }
+        return request.render('chefrulo_website.recipes_list', values)
+
+    @http.route('/recipes/<model("recipe.recipe"):recipe>', type='http', auth='public', website=True)
+    def recipe_detail(self, recipe, **post):
+        """Display individual recipe."""
+        # Check if recipe is published
+        if not recipe.is_published or not recipe.active:
+            return request.redirect('/recipes')
+
+        values = {
+            'recipe': recipe,
+        }
+        return request.render('chefrulo_website.recipe_detail', values)

@@ -251,3 +251,44 @@ body:has(.o_catering_quote_mode) {
         display: none !important;
     }
 }
+
+// ========================================
+// Recipes Pages
+// ========================================
+.recipe-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+    }
+
+    .card-img-top {
+        transition: opacity 0.2s ease;
+    }
+
+    &:hover .card-img-top {
+        opacity: 0.95;
+    }
+}
+
+.recipe-instructions {
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+    }
+
+    ol, ul {
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    p {
+        margin-bottom: 1rem;
+    }
+}

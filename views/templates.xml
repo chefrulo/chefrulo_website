@@ -359,4 +359,215 @@
         </xpath>
     </template>
 
+    <!-- ========================================
+         Recipes Pages
+         ======================================== -->
+
+    <!-- Recipes List Page -->
+    <template id="recipes_list" name="Recipes List">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <!-- Editable zone: above recipes -->
+                <div id="recipes_top" class="oe_structure"/>
+
+                <!-- Header -->
+                <div class="container py-5 text-center">
+                    <h1 class="display-4 fw-bold">Our Recipes</h1>
+                    <p class="lead text-muted">Discover how to make our delicious dishes at home</p>
+                </div>
+
+                <!-- Category filter -->
+                <div t-if="categories" class="container mb-4">
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a t-attf-href="/recipes"
+                           t-attf-class="btn btn-sm #{not current_category and 'btn-primary' or 'btn-outline-primary'}">
+                            All
+                        </a>
+                        <t t-foreach="categories" t-as="cat">
+                            <a t-attf-href="/recipes?category=#{cat.name}"
+                               t-attf-class="btn btn-sm #{current_category == cat.name and 'btn-primary' or 'btn-outline-primary'}">
+                                <t t-out="cat.name"/>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Recipes grid -->
+                <div class="container pb-5">
+                    <div class="row g-4">
+                        <t t-foreach="recipes" t-as="recipe">
+                            <div class="col-md-6 col-lg-4">
+                                <a t-attf-href="/recipes/#{recipe.id}" class="text-decoration-none">
+                                    <div class="card h-100 shadow-sm recipe-card">
+                                        <t t-if="recipe.image">
+                                            <img t-att-src="'/web/image/recipe.recipe/%s/image' % recipe.id"
+                                                 class="card-img-top"
+                                                 t-att-alt="recipe.name"
+                                                 style="height: 200px; object-fit: cover;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
+                                                 style="height: 200px;">
+                                                <i class="fa fa-cutlery fa-3x text-muted"></i>
+                                            </div>
+                                        </t>
+                                        <div class="card-body">
+                                            <h5 class="card-title text-dark" t-out="recipe.name"/>
+                                            <t t-if="recipe.category_id">
+                                                <span class="badge bg-secondary mb-2" t-out="recipe.category_id.name"/>
+                                            </t>
+                                            <p t-if="recipe.description" class="card-text text-muted small">
+                                                <t t-out="recipe.description[:100] + '...' if len(recipe.description or '') > 100 else recipe.description"/>
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">
+                                                    <i class="fa fa-users me-1"></i>
+                                                    <t t-out="recipe.portions"/> portions
+                                                </small>
+                                                <span class="text-primary">View Recipe <i class="fa fa-arrow-right"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+
+                    <!-- Empty state -->
+                    <t t-if="not recipes">
+                        <div class="text-center py-5">
+                            <i class="fa fa-book text-muted" style="font-size: 64px;"></i>
+                            <h3 class="mt-3 text-muted">No recipes yet</h3>
+                            <p class="text-muted">Check back soon for delicious recipes!</p>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Editable zone: below recipes -->
+                <div id="recipes_bottom" class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+    <!-- Recipe Detail Page -->
+    <template id="recipe_detail" name="Recipe Detail">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container py-5">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/recipes">Recipes</a></li>
+                            <t t-if="recipe.category_id">
+                                <li class="breadcrumb-item">
+                                    <a t-attf-href="/recipes?category=#{recipe.category_id.name}" t-out="recipe.category_id.name"/>
+                                </li>
+                            </t>
+                            <li class="breadcrumb-item active" t-out="recipe.name"/>
+                        </ol>
+                    </nav>
+
+                    <div class="row">
+                        <!-- Recipe image -->
+                        <div class="col-lg-5 mb-4">
+                            <t t-if="recipe.image">
+                                <img t-att-src="'/web/image/recipe.recipe/%s/image' % recipe.id"
+                                     class="img-fluid rounded shadow"
+                                     t-att-alt="recipe.name"/>
+                            </t>
+                            <t t-else="">
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                     style="height: 300px;">
+                                    <i class="fa fa-cutlery fa-5x text-muted"></i>
+                                </div>
+                            </t>
+                        </div>
+
+                        <!-- Recipe info -->
+                        <div class="col-lg-7">
+                            <h1 class="mb-3" t-out="recipe.name"/>
+
+                            <t t-if="recipe.category_id">
+                                <span class="badge bg-primary mb-3" t-out="recipe.category_id.name"/>
+                            </t>
+
+                            <!-- Quick info -->
+                            <div class="d-flex gap-4 mb-4 text-muted">
+                                <div>
+                                    <i class="fa fa-users me-1"></i>
+                                    <strong t-out="recipe.portions"/> portions
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <t t-if="recipe.website_description">
+                                <div class="mb-4" t-out="recipe.website_description"/>
+                            </t>
+                            <t t-elif="recipe.description">
+                                <p class="lead text-muted" t-out="recipe.description"/>
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <!-- Ingredients -->
+                        <div class="col-lg-4 mb-4">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0"><i class="fa fa-list me-2"></i>Ingredients</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled mb-0">
+                                        <t t-foreach="recipe.line_ids" t-as="line">
+                                            <li class="py-2 border-bottom">
+                                                <t t-if="line.ingredient_id">
+                                                    <strong t-out="line.quantity"/>
+                                                    <span t-out="line.uom_id.name"/>
+                                                    <span t-out="line.ingredient_id.name"/>
+                                                </t>
+                                                <t t-if="line.sub_recipe_id">
+                                                    <strong t-out="line.quantity"/>
+                                                    <span t-out="line.uom_id.name"/>
+                                                    <span t-out="line.sub_recipe_id.name"/>
+                                                    <span class="badge bg-info ms-1">sub-recipe</span>
+                                                </t>
+                                            </li>
+                                        </t>
+                                    </ul>
+                                    <t t-if="not recipe.line_ids">
+                                        <p class="text-muted mb-0">No ingredients listed.</p>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Instructions -->
+                        <div class="col-lg-8 mb-4">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0"><i class="fa fa-book me-2"></i>Instructions</h5>
+                                </div>
+                                <div class="card-body recipe-instructions">
+                                    <t t-if="recipe.instructions">
+                                        <t t-out="recipe.instructions"/>
+                                    </t>
+                                    <t t-else="">
+                                        <p class="text-muted mb-0">No instructions available.</p>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Back button -->
+                    <div class="text-center mt-4">
+                        <a href="/recipes" class="btn btn-outline-primary">
+                            <i class="fa fa-arrow-left me-2"></i>Back to Recipes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
 </odoo>

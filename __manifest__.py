@@ -12,12 +12,13 @@
     "category": "Website",
     "author": "Chefrulo",
     "license": "LGPL-3",
-    "depends": ["website_sale"],
+    "depends": ["website_sale", "chefrulo_recipe"],
     "data": [
         "views/templates.xml",
         "views/snippets_products_block.xml",
         "views/res_config_settings_views.xml",
         "views/product_views.xml",
+        "views/recipe_views.xml",
     ],
     "assets": {
         "web.assets_frontend": [

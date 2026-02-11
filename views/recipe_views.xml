@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Add "Show on Website" field to recipe form view -->
+    <record id="view_recipe_form_website" model="ir.ui.view">
+        <field name="name">recipe.recipe.form.website</field>
+        <field name="model">recipe.recipe</field>
+        <field name="inherit_id" ref="chefrulo_recipe.view_recipe_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="is_published"/>
+            </xpath>
+            <xpath expr="//field[@name='instructions']" position="after">
+                <field name="website_description" placeholder="Optional: different description for website visitors..."/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add "Show on Website" to recipe tree view -->
+    <record id="view_recipe_tree_website" model="ir.ui.view">
+        <field name="name">recipe.recipe.tree.website</field>
+        <field name="model">recipe.recipe</field>
+        <field name="inherit_id" ref="chefrulo_recipe.view_recipe_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_published" string="Published"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add filter for published recipes -->
+    <record id="view_recipe_search_website" model="ir.ui.view">
+        <field name="name">recipe.recipe.search.website</field>
+        <field name="model">recipe.recipe</field>
+        <field name="inherit_id" ref="chefrulo_recipe.view_recipe_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='inactive']" position="after">
+                <separator/>
+                <filter name="published" string="Published on Website" domain="[('is_published', '=', True)]"/>
+                <filter name="not_published" string="Not Published" domain="[('is_published', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
