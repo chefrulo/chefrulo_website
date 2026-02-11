@@ -84,8 +84,9 @@ function filterStates() {
     let londonOption = null;
 
     options.forEach(function(opt) {
-        const text = opt.textContent.toLowerCase();
-        if (text.includes('london')) {
+        const text = opt.textContent.trim().toLowerCase();
+        // Only match exact "london" or "greater london", exclude "county londonderry"
+        if (text === 'london' || text === 'greater london') {
             londonOption = opt;
         }
     });

@@ -23,9 +23,10 @@ class ResCountry(models.Model):
         if mode == 'shipping':
             # For shipping, only return London (for UK)
             if self.code == 'GB':
+                # Only match "London" or "Greater London", exclude "County Londonderry"
                 london = self.env['res.country.state'].sudo().search([
                     ('country_id', '=', self.id),
-                    ('name', 'ilike', 'London'),
+                    ('name', 'in', ['London', 'Greater London']),
                 ])
                 _logger.info("Returning London only: %s", london)
                 return london
