@@ -306,19 +306,21 @@ body:has(.o_catering_quote_mode) {
         font-size: 0.875rem !important;
     }
 
-    // Convert button to text link style
+    // Subtle button style
     .js_menu_cart_btn {
-        background: none !important;
+        background: var(--o-color-1, #017e84) !important;
         border: none !important;
-        color: var(--o-color-1, #017e84) !important;
-        font-size: 0.875rem !important;
+        color: #fff !important;
+        font-size: 0.8rem !important;
         font-weight: normal !important;
-        padding: 0 !important;
+        padding: 6px 14px !important;
+        border-radius: 4px !important;
         box-shadow: none !important;
+        transition: background 0.2s ease !important;
 
         &:hover {
-            text-decoration: underline !important;
-            background: none !important;
+            background: var(--o-color-1-dark, #015f63) !important;
+            text-decoration: none !important;
         }
 
         // Hide the cart icon
