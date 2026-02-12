@@ -3,23 +3,59 @@
 import publicWidget from "@web/legacy/js/public/public_widget";
 import { jsonrpc } from "@web/core/network/rpc_service";
 
-// Menu Search Filter
+// Menu Search Filter - inject search bar dynamically
 publicWidget.registry.MenuSearch = publicWidget.Widget.extend({
-    selector: '#menu_search',
-    events: {
-        'input': '_onSearch',
+    selector: '.js_menu_add_to_cart',
+
+    start: function () {
+        var self = this;
+        return this._super.apply(this, arguments).then(function () {
+            self._injectSearchBar();
+        });
+    },
+
+    _injectSearchBar: function () {
+        // Only inject once, and only on catering/menu pages
+        if ($('#menu_search_injected').length) return;
+        if (!window.location.pathname.includes('/catering') && !window.location.pathname.includes('/menu')) return;
+
+        // Find the container with products
+        var $container = this.$el.closest('.container');
+        if (!$container.length) return;
+
+        // Create and inject search bar at the top of container
+        var searchHtml = `
+            <div id="menu_search_injected" class="row justify-content-center mb-4">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fa fa-search text-muted"></i>
+                        </span>
+                        <input type="text"
+                               id="menu_search"
+                               class="form-control border-start-0"
+                               placeholder="Search products..."/>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Insert at the beginning of the container
+        $container.prepend(searchHtml);
+
+        // Bind search event
+        $('#menu_search').on('input', this._onSearch.bind(this));
     },
 
     _onSearch: function (ev) {
         var searchTerm = ev.target.value.toLowerCase().trim();
-        var $products = $('.menu-product-row');
-        var $categories = $('h4.text-muted');
+        // Find product rows by looking at rows with add to cart forms
+        var $products = $('.js_menu_add_to_cart').closest('.row.align-items-center');
         var $sections = $('.mb-5');
 
         if (!searchTerm) {
             // Show all products and categories
             $products.show();
-            $categories.show();
             $sections.show();
             return;
         }
@@ -27,8 +63,8 @@ publicWidget.registry.MenuSearch = publicWidget.Widget.extend({
         // Filter products
         $products.each(function () {
             var $row = $(this);
-            var name = $row.data('product-name') || '';
-            var desc = $row.data('product-desc') || '';
+            var name = $row.find('h5').text().toLowerCase();
+            var desc = $row.find('p.text-muted').text().toLowerCase();
 
             if (name.includes(searchTerm) || desc.includes(searchTerm)) {
                 $row.show();
@@ -37,10 +73,10 @@ publicWidget.registry.MenuSearch = publicWidget.Widget.extend({
             }
         });
 
-        // Hide empty categories
+        // Hide empty sections
         $sections.each(function () {
             var $section = $(this);
-            var visibleProducts = $section.find('.menu-product-row:visible').length;
+            var visibleProducts = $section.find('.js_menu_add_to_cart:visible').length;
             if (visibleProducts === 0) {
                 $section.hide();
             } else {
