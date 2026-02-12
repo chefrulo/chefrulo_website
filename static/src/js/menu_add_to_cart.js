@@ -3,6 +3,53 @@
 import publicWidget from "@web/legacy/js/public/public_widget";
 import { jsonrpc } from "@web/core/network/rpc_service";
 
+// Menu Search Filter
+publicWidget.registry.MenuSearch = publicWidget.Widget.extend({
+    selector: '#menu_search',
+    events: {
+        'input': '_onSearch',
+    },
+
+    _onSearch: function (ev) {
+        var searchTerm = ev.target.value.toLowerCase().trim();
+        var $products = $('.menu-product-row');
+        var $categories = $('h4.text-muted');
+        var $sections = $('.mb-5');
+
+        if (!searchTerm) {
+            // Show all products and categories
+            $products.show();
+            $categories.show();
+            $sections.show();
+            return;
+        }
+
+        // Filter products
+        $products.each(function () {
+            var $row = $(this);
+            var name = $row.data('product-name') || '';
+            var desc = $row.data('product-desc') || '';
+
+            if (name.includes(searchTerm) || desc.includes(searchTerm)) {
+                $row.show();
+            } else {
+                $row.hide();
+            }
+        });
+
+        // Hide empty categories
+        $sections.each(function () {
+            var $section = $(this);
+            var visibleProducts = $section.find('.menu-product-row:visible').length;
+            if (visibleProducts === 0) {
+                $section.hide();
+            } else {
+                $section.show();
+            }
+        });
+    },
+});
+
 publicWidget.registry.MenuAddToCart = publicWidget.Widget.extend({
     selector: '.js_menu_add_to_cart',
     events: {

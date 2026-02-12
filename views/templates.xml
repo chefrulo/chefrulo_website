@@ -128,6 +128,21 @@
                 <div id="menu_before_products" class="oe_structure"/>
 
                 <div class="container pb-5">
+                    <!-- Search bar -->
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="fa fa-search text-muted"></i>
+                                </span>
+                                <input type="text"
+                                       id="menu_search"
+                                       class="form-control border-start-0"
+                                       placeholder="Search products..."/>
+                            </div>
+                        </div>
+                    </div>
+
                     <t t-foreach="menu_data" t-as="section">
                         <!-- Category Header -->
                         <div class="mb-5">
@@ -143,7 +158,9 @@
 
                                 <!-- Product List -->
                                 <t t-foreach="sub['products']" t-as="product">
-                                    <div class="row align-items-center py-3 border-bottom">
+                                    <div class="row align-items-center py-3 border-bottom menu-product-row"
+                                         t-att-data-product-name="product.name.lower()"
+                                         t-att-data-product-desc="(product.description_sale or '').lower()">
                                         <!-- Product Image -->
                                         <div class="col-auto">
                                             <a t-attf-href="/shop/#{product.id}">
