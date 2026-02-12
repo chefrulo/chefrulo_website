@@ -292,3 +292,46 @@ body:has(.o_catering_quote_mode) {
         margin-bottom: 1rem;
     }
 }
+
+// ========================================
+// Catering Menu Page Styling Overrides
+// ========================================
+// Override Website Builder saved styles on /catering page
+.js_menu_add_to_cart {
+    // Softer quantity input
+    input[name="add_qty"] {
+        width: 50px !important;
+        border: none !important;
+        background: #f8f9fa !important;
+        font-size: 0.875rem !important;
+    }
+
+    // Convert button to text link style
+    .js_menu_cart_btn {
+        background: none !important;
+        border: none !important;
+        color: var(--o-color-1, #017e84) !important;
+        font-size: 0.875rem !important;
+        font-weight: normal !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+
+        &:hover {
+            text-decoration: underline !important;
+            background: none !important;
+        }
+
+        // Hide the cart icon
+        .fa-cart-plus {
+            display: none !important;
+        }
+    }
+}
+
+// Softer price styling on menu page
+.js_menu_add_to_cart ~ .col-auto .fw-bold.fs-5,
+.col-auto > .fw-bold.fs-5 {
+    font-weight: normal !important;
+    font-size: 0.875rem !important;
+    color: #6c757d !important;
+}
