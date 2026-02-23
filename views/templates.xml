@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
+    <!-- Favicon -->
+    <template id="favicon_head" inherit_id="website.layout" name="Chef Rulo Favicon">
+        <xpath expr="//head" position="inside">
+            <link rel="icon" type="image/png" href="/chefrulo_website/static/favicon/favicon-96x96.png" sizes="96x96"/>
+            <link rel="icon" type="image/svg+xml" href="/chefrulo_website/static/favicon/favicon.svg"/>
+            <link rel="shortcut icon" href="/chefrulo_website/static/favicon/favicon.ico"/>
+            <link rel="apple-touch-icon" sizes="180x180" href="/chefrulo_website/static/favicon/apple-touch-icon.png"/>
+            <link rel="manifest" href="/chefrulo_website/static/favicon/site.webmanifest"/>
+        </xpath>
+    </template>
+
     <!-- Add "Request Quote" button on the cart page (only for Catering products) -->
     <template id="cart_request_quote_button"
               inherit_id="website_sale.navigation_buttons"
