@@ -12,6 +12,63 @@
         </xpath>
     </template>
 
+    <!-- Schema.org LocalBusiness JSON-LD -->
+    <template id="schema_local_business" inherit_id="website.layout" name="Chef Rulo LocalBusiness Schema">
+        <xpath expr="//head" position="inside">
+            <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FoodEstablishment",
+  "name": "Chef Rulo Limited",
+  "description": "Homemade Argentinian empanadas and modern Argentine food in London. Fire, Ritual, Soul.",
+  "url": "https://chefrulo.com",
+  "telephone": "+447832300695",
+  "email": "info@chefrulo.com",
+  "servesCuisine": ["Modern Argentine", "Empanadas", "Sandwiches"],
+  "priceRange": "££",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "523 Bromley Road",
+    "addressLocality": "Bromley",
+    "postalCode": "BR1 4PG",
+    "addressRegion": "London",
+    "addressCountry": "GB"
+  },
+  "location": [
+    {
+      "@type": "FoodEstablishment",
+      "name": "Chef Rulo — Bank Market Stall",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "7 Austin Friars",
+        "addressLocality": "Bank, London",
+        "postalCode": "EC2N 2HA",
+        "addressCountry": "GB"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "08:00",
+          "closes": "15:00"
+        }
+      ]
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "14",
+    "bestRating": "5"
+  },
+  "sameAs": [
+    "https://www.google.com/maps/place/Chef+Rulo+Homemade+Argentinean+Empanadas/@51.4226636,-0.0024319,17z"
+  ]
+}
+            </script>
+        </xpath>
+    </template>
+
     <!-- Add "Request Quote" button on the cart page (only for Catering products) -->
     <template id="cart_request_quote_button"
               inherit_id="website_sale.navigation_buttons"
