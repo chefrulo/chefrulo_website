@@ -18,26 +18,42 @@
             <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FoodEstablishment",
-  "name": "Chef Rulo Limited",
-  "description": "Homemade Argentinian empanadas and modern Argentine food in London. Fire, Ritual, Soul.",
-  "url": "https://chefrulo.com",
-  "telephone": "+447832300695",
-  "email": "info@chefrulo.com",
-  "servesCuisine": ["Modern Argentine", "Empanadas", "Sandwiches"],
-  "priceRange": "££",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "523 Bromley Road",
-    "addressLocality": "Bromley",
-    "postalCode": "BR1 4PG",
-    "addressRegion": "London",
-    "addressCountry": "GB"
-  },
-  "location": [
+  "@graph": [
     {
       "@type": "FoodEstablishment",
+      "@id": "https://chefrulo.com/#business",
+      "name": "Chef Rulo Limited",
+      "description": "Homemade Argentinian empanadas and modern Argentine food in London. Fire, Ritual, Soul.",
+      "url": "https://chefrulo.com",
+      "telephone": "+447832300695",
+      "email": "info@chefrulo.com",
+      "servesCuisine": ["Modern Argentine", "Empanadas", "Sandwiches"],
+      "priceRange": "££",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "523 Bromley Road",
+        "addressLocality": "Bromley",
+        "postalCode": "BR1 4PG",
+        "addressRegion": "London",
+        "addressCountry": "GB"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 5.0,
+        "reviewCount": 14,
+        "bestRating": 5
+      },
+      "sameAs": [
+        "https://www.google.com/maps/place/Chef+Rulo+Homemade+Argentinean+Empanadas/@51.4226636,-0.0024319,17z"
+      ]
+    },
+    {
+      "@type": "FoodEstablishment",
+      "@id": "https://chefrulo.com/#bank-stall",
       "name": "Chef Rulo — Bank Market Stall",
+      "parentOrganization": {
+        "@id": "https://chefrulo.com/#business"
+      },
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "7 Austin Friars",
@@ -54,15 +70,6 @@
         }
       ]
     }
-  ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5.0",
-    "reviewCount": "14",
-    "bestRating": "5"
-  },
-  "sameAs": [
-    "https://www.google.com/maps/place/Chef+Rulo+Homemade+Argentinean+Empanadas/@51.4226636,-0.0024319,17z"
   ]
 }
             </script>
