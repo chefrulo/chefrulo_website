@@ -31,7 +31,7 @@ class RecipeRecipe(models.Model):
             if name:
                 qty = str(line.quantity).rstrip('0').rstrip('.') if '.' in str(line.quantity) else str(int(line.quantity))
                 uom = line.uom_id.name if line.uom_id else ''
-                ingredients.append(f"{qty} {uom} {name}".strip())
+                ingredients.append(' '.join(filter(None, [qty, uom, name])))
 
         schema = {
             "@context": "https://schema.org",
