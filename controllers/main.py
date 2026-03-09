@@ -84,6 +84,12 @@ class WebsiteMenu(http.Controller):
         values = {
             'menu_data': menu_data,
             'is_catering': category_filter == 'Catering',
+            'meta_description': (
+                'Order authentic Argentine catering in London. Empanadas, sandwiches and more from Chef Rulo. '
+                'Perfect for corporate events, offices and private parties.'
+                if category_filter == 'Catering'
+                else 'Browse the Chef Rulo menu — handmade Argentine empanadas and more, available for delivery and collection in London.'
+            ),
         }
         return request.render('chefrulo_website.menu_page', values)
 

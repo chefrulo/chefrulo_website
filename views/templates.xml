@@ -197,6 +197,7 @@
 
     <!-- Menu / Catalog page -->
     <template id="menu_page" name="Menu Catalog Page">
+        <t t-if="meta_description" t-set="head"><meta name="description" t-att-content="meta_description"/></t>
         <t t-call="website.layout">
             <div id="wrap">
                 <!-- Editable zone: above header (hero, banners, etc.) -->
@@ -551,6 +552,9 @@
 
     <!-- Recipe Detail Page -->
     <template id="recipe_detail" name="Recipe Detail">
+        <t t-set="head">
+            <meta name="description" t-att-content="(recipe.description or '')[:155] or recipe.name + ' — recipe by Chef Rulo'"/>
+        </t>
         <t t-call="website.layout">
             <div id="wrap">
                 <div class="container py-5">
