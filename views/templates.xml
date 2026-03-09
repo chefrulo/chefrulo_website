@@ -670,4 +670,13 @@
         </t>
     </template>
 
+    <!-- Schema.org Recipe JSON-LD -->
+    <template id="schema_recipe" inherit_id="chefrulo_website.recipe_detail" name="Chef Rulo Recipe Schema">
+        <xpath expr="//div[@id='wrap']" position="inside">
+            <script type="application/ld+json">
+                <t t-out="recipe.get_schema_org_json()"/>
+            </script>
+        </xpath>
+    </template>
+
 </odoo>
