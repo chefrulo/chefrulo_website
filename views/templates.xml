@@ -78,32 +78,9 @@
 
     <!-- Schema.org Product JSON-LD -->
     <template id="schema_product" inherit_id="website_sale.product" name="Chef Rulo Product Schema">
-        <xpath expr="//head" position="inside">
-            <t t-set="product_url" t-value="'https://chefrulo.com/shop/' + str(product.id)"/>
-            <t t-set="product_image_url" t-value="'https://chefrulo.com/web/image/product.template/' + str(product.id) + '/image_1920'"/>
-            <t t-set="product_price" t-value="'%.2f' % product.list_price"/>
+        <xpath expr="//div[@id='wrap']" position="before">
             <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "<t t-out="product.name"/>",
-  "image": "<t t-out="product_image_url"/>",
-  "brand": {
-    "@type": "Brand",
-    "name": "Chef Rulo"
-  },
-  "offers": {
-    "@type": "Offer",
-    "url": "<t t-out="product_url"/>",
-    "priceCurrency": "<t t-out="website.currency_id.name"/>",
-    "price": "<t t-out="product_price"/>",
-    "availability": "https://schema.org/InStock",
-    "seller": {
-      "@type": "Organization",
-      "name": "Chef Rulo Limited"
-    }
-  }
-}
+                <t t-out="product.get_schema_org_json()"/>
             </script>
         </xpath>
     </template>
