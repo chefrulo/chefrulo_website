@@ -9,8 +9,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='note']" position="before">
                 <group string="Delivery Info" col="2">
-                    <field name="delivery_date" readonly="1" attrs="{'invisible': [('delivery_date', '=', False)]}"/>
-                    <field name="shipping_note" readonly="1" attrs="{'invisible': [('shipping_note', '=', False)]}"/>
+                    <field name="delivery_date" readonly="1" invisible="not delivery_date"/>
+                    <field name="shipping_note" readonly="1" invisible="not shipping_note"/>
                 </group>
             </xpath>
         </field>
