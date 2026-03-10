@@ -683,4 +683,50 @@
         </xpath>
     </template>
 
+    <!-- ========================================
+         Delivery Date Selector on Payment Page
+         ======================================== -->
+    <template id="delivery_date_selector" inherit_id="website_sale.payment_delivery" name="Delivery Date &amp; Comments">
+        <xpath expr="//div[@id='delivery_carrier']" position="inside">
+            <div id="delivery_date_block" class="mt-4">
+                <h4 class="fs-6 small text-uppercase fw-bolder">Choose your date</h4>
+                <div class="card border-0">
+                    <div class="card-body p-0">
+                        <select id="delivery_date_select"
+                                class="form-select mb-2">
+                            <option value="">&#8212; Select a date &#8212;</option>
+                            <t t-foreach="website_sale_order.get_available_delivery_dates()" t-as="d">
+                                <option t-att-value="d"
+                                        t-att-selected="website_sale_order.delivery_date == d">
+                                    <t t-out="d"/>
+                                </option>
+                            </t>
+                        </select>
+
+                        <div id="delivery_info_delivery" class="text-muted small mb-3 d-none">
+                            <i class="fa fa-info-circle me-1"></i>
+                            Delivery by 6pm &#8212; Within 4 miles of our kitchen (&#163;5.00, free over &#163;60)
+                        </div>
+                        <div id="delivery_info_pickup" class="text-muted small mb-3 d-none">
+                            <i class="fa fa-info-circle me-1"></i>
+                            Pickup from 5pm&#8211;9pm &#8212; 523 Bromley Road, Bromley BR1 4PG
+                        </div>
+                        <div id="delivery_date_error" class="text-danger small mb-2 d-none">
+                            Please select a delivery/pickup date before paying.
+                        </div>
+
+                        <label class="fs-6 small text-uppercase fw-bolder d-block mt-3 mb-2"
+                               for="shipping_note_input">
+                            Comments / Special instructions
+                        </label>
+                        <textarea id="shipping_note_input"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Allergies, special requests, delivery instructions..."><t t-out="website_sale_order.shipping_note or ''"/></textarea>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
 </odoo>
