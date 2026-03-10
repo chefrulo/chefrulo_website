@@ -9,6 +9,9 @@
 
     function isPickup(radioEl) {
         const label = document.querySelector('label[for="' + radioEl.id + '"]');
+        if (!label) {
+            console.warn('delivery_date_selector: no label found for radio id=', radioEl.id);
+        }
         const name = label ? label.textContent.toLowerCase() : '';
         return name.includes('take away') || name.includes('pickup') || name.includes('pick up');
     }
@@ -27,31 +30,17 @@
     }
 
     function saveDeliveryInfo(params) {
-        fetch('/web/dataset/call_kw', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                jsonrpc: '2.0',
-                method: 'call',
-                id: 1,
-                params: {
-                    model: 'sale.order',
-                    method: 'read',
-                    args: [],
-                    kwargs: {},
-                },
-            }),
-        });
-        // Use the simpler direct JSON-RPC route
         fetch('/shop/save_delivery_info', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 jsonrpc: '2.0',
                 method: 'call',
-                id: 1,
+                id: Date.now(),
                 params: params,
             }),
+        }).catch(function (err) {
+            console.error('delivery_date_selector: failed to save delivery info', err);
         });
     }
 
@@ -96,7 +85,6 @@
 
         // Pay button validation: require a date before payment proceeds
         document.addEventListener('click', function (e) {
-            if (!dateBlock) return;
             const btn = e.target.closest(
                 '.o_payment_submit_button, [name="o_payment_submit_button"]'
             );
