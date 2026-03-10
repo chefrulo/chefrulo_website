@@ -254,3 +254,21 @@ class WebsiteRecipes(http.Controller):
             'recipe': recipe,
         }
         return request.render('chefrulo_website.recipe_detail', values)
+
+
+class WebsiteDeliveryInfo(http.Controller):
+
+    @http.route('/shop/save_delivery_info', type='json', auth='public', website=True)
+    def save_delivery_info(self, delivery_date=None, shipping_note=None, **kwargs):
+        """Save delivery date and shipping note to the current order."""
+        order = request.website.sale_get_order()
+        if not order:
+            return {'error': 'No active order'}
+        vals = {}
+        if delivery_date is not None:
+            vals['delivery_date'] = delivery_date
+        if shipping_note is not None:
+            vals['shipping_note'] = shipping_note
+        if vals:
+            order.sudo().write(vals)
+        return {'success': True}
