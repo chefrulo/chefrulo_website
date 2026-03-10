@@ -46,42 +46,46 @@ function initImagePopupModal() {
     const modalImg = document.getElementById('imagePopupModalImg');
     const modalTitle = document.getElementById('imagePopupModalTitle');
 
+    function openImageModal(img, title) {
+        // Prefer original (full-size) src if available
+        const src = img.dataset.originalSrc || img.src;
+        modalImg.src = src;
+        modalImg.alt = img.alt || '';
+        modalTitle.textContent = title || '';
+        const bsModal = new bootstrap.Modal(modalElement);
+        bsModal.show();
+    }
+
     // Attach click handlers to popup images
     function attachPopupHandlers() {
-        // Find all images with the o_popup_image class
-        const popupImages = document.querySelectorAll('img.o_popup_image');
-
-        popupImages.forEach(img => {
-            // Skip if already initialized
+        // Target 1: explicit o_popup_image class
+        document.querySelectorAll('img.o_popup_image').forEach(img => {
             if (img._popupInitialized) return;
             img._popupInitialized = true;
-
-            // Make image clickable
             img.style.cursor = 'pointer';
-
             img.addEventListener('click', function(e) {
-                // Don't trigger popup in edit mode
-                if (isEditMode()) {
-                    return;
-                }
-
+                if (isEditMode()) return;
                 e.preventDefault();
                 e.stopPropagation();
+                const container = img.closest('.card, .col, div');
+                const titleEl = container ? container.querySelector('.card-title, h2, h3, h4, h5, h6') : null;
+                openImageModal(img, img.dataset.popupTitle || (titleEl && titleEl.textContent.trim()) || img.alt);
+            });
+        });
 
-                // Get title from data attribute or nearby elements
-                let title = img.dataset.popupTitle || '';
-                if (!title) {
-                    const container = img.closest('.card, .col, div');
-                    const titleEl = container ? container.querySelector('.card-title, h1, h2, h3, h4, h5, h6') : null;
-                    title = titleEl ? titleEl.textContent.trim() : (img.alt || '');
-                }
-
-                modalImg.src = img.src;
-                modalImg.alt = img.alt || '';
-                modalTitle.textContent = title;
-
-                // Show modal using Bootstrap
-                $(modalElement).modal('show');
+        // Target 2: .card elements that contain a card-img-top (the empanada flavor cards)
+        document.querySelectorAll('.card:has(img.card-img-top)').forEach(card => {
+            if (card._popupInitialized) return;
+            card._popupInitialized = true;
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', function(e) {
+                if (isEditMode()) return;
+                e.preventDefault();
+                e.stopPropagation();
+                const img = card.querySelector('img.card-img-top');
+                if (!img) return;
+                const titleEl = card.querySelector('.card-title, h2, h3, h4, h5, h6');
+                openImageModal(img, titleEl ? titleEl.textContent.trim() : img.alt);
             });
         });
     }
