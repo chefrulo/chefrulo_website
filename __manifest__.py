@@ -19,6 +19,7 @@
         "views/res_config_settings_views.xml",
         "views/product_views.xml",
         "views/recipe_views.xml",
+        "views/sale_order_views.xml",
     ],
     "assets": {
         "web.assets_frontend": [
