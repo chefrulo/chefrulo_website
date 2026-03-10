@@ -42,3 +42,24 @@ class SaleOrder(models.Model):
                         has_catering = True
                         break
             order.has_catering_products = has_catering
+
+    delivery_date = fields.Char(
+        string='Delivery/Pickup Date',
+        help='Date chosen by the customer during checkout'
+    )
+    shipping_note = fields.Text(
+        string='Shipping Notes',
+        help='Special instructions from the customer'
+    )
+
+    def get_available_delivery_dates(self):
+        """Return list of next 5 Mon-Fri working day labels from tomorrow."""
+        from datetime import date, timedelta
+        today = date.today()
+        dates = []
+        d = today + timedelta(days=1)
+        while len(dates) < 5:
+            if d.weekday() < 5:  # 0=Mon ... 4=Fri
+                dates.append(d.strftime('%A %-d %B'))
+            d += timedelta(days=1)
+        return dates
