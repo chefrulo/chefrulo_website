@@ -21,8 +21,11 @@ function initImagePopupModal() {
         return;
     }
 
-    // Create modal HTML
+    // Create modal HTML (hidden trigger button avoids needing global bootstrap object)
     const modalHTML = `
+        <button id="imagePopupModalTrigger" type="button"
+                data-bs-toggle="modal" data-bs-target="#imagePopupModal"
+                style="display:none" aria-hidden="true"></button>
         <div class="modal fade" id="imagePopupModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content bg-dark border-0">
@@ -42,7 +45,6 @@ function initImagePopupModal() {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
     // Get modal elements
-    const modalElement = document.getElementById('imagePopupModal');
     const modalImg = document.getElementById('imagePopupModalImg');
     const modalTitle = document.getElementById('imagePopupModalTitle');
 
@@ -52,8 +54,9 @@ function initImagePopupModal() {
         modalImg.src = src;
         modalImg.alt = img.alt || '';
         modalTitle.textContent = title || '';
-        const bsModal = new bootstrap.Modal(modalElement);
-        bsModal.show();
+        // Click the hidden trigger — Bootstrap wires data-bs-toggle itself,
+        // so we don't need the global bootstrap object
+        document.getElementById('imagePopupModalTrigger').click();
     }
 
     // Attach click handlers to popup images
