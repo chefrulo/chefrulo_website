@@ -29,7 +29,6 @@ function filterCountrySelect() {
 
     if (!ukOption) return;
 
-    // Keep only the placeholder and UK
     options.forEach(function (opt) {
         if (opt.value !== '' && opt !== ukOption) {
             opt.remove();
@@ -60,7 +59,6 @@ function filterStateSelect() {
 
     if (!londonOption) return;
 
-    // Keep only the placeholder and London
     options.forEach(function (opt) {
         if (opt.value !== '' && opt !== londonOption) {
             opt.remove();
@@ -71,21 +69,29 @@ function filterStateSelect() {
     stateSelect.dataset.londonFiltered = 'true';
 }
 
-// Re-run filters after country change (state select loads dynamically)
-document.addEventListener('change', function (e) {
-    if (e.target && e.target.name === 'country_id') {
-        setTimeout(filterStateSelect, 500);
-    }
-});
-
-// Initial run + observe dynamic content
-document.addEventListener('DOMContentLoaded', function () {
+function init() {
     filterCountrySelect();
     filterStateSelect();
 
+    // Re-run state filter after country change (state options load dynamically)
+    document.addEventListener('change', function (e) {
+        if (e.target && e.target.name === 'country_id') {
+            setTimeout(filterStateSelect, 500);
+        }
+    });
+
+    // Watch for dynamically injected address forms (Odoo SPA navigation)
     const observer = new MutationObserver(function () {
         filterCountrySelect();
         filterStateSelect();
     });
     observer.observe(document.body, { childList: true, subtree: true });
-});
+}
+
+// Run immediately if DOM is ready, otherwise wait — same pattern used by
+// Odoo's own frontend modules to handle late script execution.
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
