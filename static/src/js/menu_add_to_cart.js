@@ -49,8 +49,8 @@ publicWidget.registry.MenuSearch = publicWidget.Widget.extend({
 
     _onSearch: function (ev) {
         var searchTerm = ev.target.value.toLowerCase().trim();
-        // Find product rows by looking at rows with add to cart forms
-        var $products = $('.js_menu_add_to_cart').closest('.row.align-items-center');
+        // Find product cards
+        var $products = $('.js_menu_add_to_cart').closest('.menu-product-card');
         var $sections = $('.mb-5');
 
         if (!searchTerm) {
