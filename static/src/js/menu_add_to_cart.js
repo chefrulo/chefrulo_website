@@ -15,9 +15,12 @@ publicWidget.registry.MenuSearch = publicWidget.Widget.extend({
     },
 
     _injectSearchBar: function () {
-        // Only inject once, and only on catering/menu pages
-        if ($('#menu_search_injected').length) return;
         if (!window.location.pathname.includes('/catering') && !window.location.pathname.includes('/menu')) return;
+        // If the search bar already exists in the template, just bind the event
+        if ($('#menu_search_injected').length) {
+            $('#menu_search').on('input', this._onSearch.bind(this));
+            return;
+        }
 
         // Find the container with products
         var $container = this.$el.closest('.container');
