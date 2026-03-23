@@ -83,6 +83,8 @@ function initImagePopupModal() {
             card.style.cursor = 'pointer';
             card.addEventListener('click', function(e) {
                 if (isEditMode()) return;
+                // Ignore clicks on interactive elements (buttons, inputs, forms, links)
+                if (e.target.closest('button, input, form, a')) return;
                 e.preventDefault();
                 e.stopPropagation();
                 const img = card.querySelector('img.card-img-top');
