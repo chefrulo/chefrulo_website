@@ -83,8 +83,16 @@ function initImagePopupModal() {
             card.style.cursor = 'pointer';
             card.addEventListener('click', function(e) {
                 if (isEditMode()) return;
-                // Ignore clicks on interactive elements (buttons, inputs, forms, links)
                 if (e.target.closest('button, input, form, a')) return;
+
+                // If the card has product links (e.g. catering grid), navigate there
+                const productLink = card.querySelector('a[href]');
+                if (productLink) {
+                    window.location.href = productLink.href;
+                    return;
+                }
+
+                // No links in card (e.g. delivery flavor cards): open lightbox
                 e.preventDefault();
                 e.stopPropagation();
                 const img = card.querySelector('img.card-img-top');
