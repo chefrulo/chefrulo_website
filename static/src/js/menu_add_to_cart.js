@@ -132,7 +132,13 @@ publicWidget.registry.MenuAddToCart = publicWidget.Widget.extend({
         }).then(function (data) {
             // Update cart badge in navbar
             var cartQty = data.cart_quantity || 0;
-            $('sup.my_cart_quantity').text(cartQty).toggle(cartQty > 0);
+            var $badge = $('sup.my_cart_quantity');
+            $badge.text(cartQty);
+            if (cartQty > 0) {
+                $badge.removeClass('d-none');
+            } else {
+                $badge.addClass('d-none');
+            }
             // Show success feedback
             var addedText = isCateringPage ? 'Added to quote' : 'Added';
             $btn.html('<i class="fa fa-check me-1"/> ' + addedText);
