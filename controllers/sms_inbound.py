@@ -19,11 +19,7 @@ class TwilioInboundSMS(http.Controller):
 
         _logger.info("Twilio inbound SMS from %s: %s", from_number, body)
 
-        # Normalize number variants: +44... / 0044... / 44...
-        normalized = self._normalize_number(from_number)
-
-        # Search partner by mobile or phone, trying both original and normalized
-        partner = self._find_partner(from_number, normalized)
+        partner = self._find_partner(from_number, None)
 
         if partner:
             partner.sudo().message_post(
@@ -40,24 +36,33 @@ class TwilioInboundSMS(http.Controller):
         # Twilio requires a TwiML response (empty = no auto-reply)
         return self._twiml_response()
 
-    def _normalize_number(self, number):
-        """Convert number to E.164 format best-effort for matching."""
-        # Remove spaces and dashes
+    def _get_number_variants(self, number):
+        """Return all plausible formats for a given number to match against Odoo."""
         clean = re.sub(r'[\s\-\(\)]', '', number)
-        # 0044... -> +44...
+        variants = {clean}
+
+        # +447... -> 07...  (UK local format stored in Odoo)
+        if clean.startswith('+44'):
+            variants.add('0' + clean[3:])
+            variants.add('0044' + clean[3:])
+
+        # 0044... -> +44... and 07...
         if clean.startswith('0044'):
-            clean = '+' + clean[2:]
-        # 44... (without +) -> +44...
-        elif re.match(r'^44\d{10}$', clean):
-            clean = '+' + clean
-        return clean
+            variants.add('+' + clean[2:])
+            variants.add('0' + clean[4:])
 
-    def _find_partner(self, original, normalized):
-        """Search partner by mobile or phone, trying multiple number formats."""
+        # 07... -> +447...
+        if clean.startswith('07') and len(clean) == 11:
+            variants.add('+44' + clean[1:])
+
+        return variants
+
+    def _find_partner(self, original, _normalized=None):
+        """Search partner by phone or mobile, trying all number format variants."""
         Partner = request.env['res.partner'].sudo()
-        numbers = list({original, normalized})  # deduplicate
+        variants = self._get_number_variants(original)
 
-        for number in numbers:
+        for number in variants:
             partner = Partner.search([
                 '|',
                 ('mobile', '=', number),
