@@ -81,15 +81,22 @@ class SaleOrder(models.Model):
                 f"- {line.product_id.name} x{int(line.product_uom_qty)}"
                 for line in order.order_line
             )
+            base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+            order_url = f"{base_url}/odoo/sales/{order.id}"
             message = (
-                f"Nueva orden {order.name}\n"
-                f"Cliente: {order.partner_id.name}\n"
-                f"Entrega: {order.delivery_date or '-'}\n"
+                f"New order {order.name}\n"
+                f"Customer: {order.partner_id.name}\n"
+                f"Bill to: {order.partner_invoice_id.contact_address}\n"
+                f"Payment Method: {order.transaction_ids[:1].payment_id.journal_id.name or '-'}\n"
+                f"Ship to: {order.partner_shipping_id.contact_address}\n"
+                f"Shipping Method: {order.carrier_id.name or 'Free'}\n"
+                f"Shipping Description: {order.carrier_id.carrier_description or '-'}\n"
+                f"Shipping Date: {order.delivery_date or 'Not Set'}\n"
+                f"Shipping Note: {order.shipping_note or 'No Notes'}\n"
                 f"Total: £{order.amount_total:.2f}\n"
-                f"{lines}"
+                f"{lines}\n"
+                f"{order_url}"
             )
-            if order.shipping_note:
-                message += f"\nNotas: {order.shipping_note}"
 
             for partner in partners:
                 number = partner.mobile or partner.phone
