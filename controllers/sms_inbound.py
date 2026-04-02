@@ -23,7 +23,7 @@ class TwilioInboundSMS(http.Controller):
 
         if partner:
             partner.sudo().message_post(
-                body=f"<b>SMS recibido:</b> {body}",
+                body=body,
                 message_type='sms',
                 subtype_xmlid='mail.mt_note',
                 author_id=partner.id,
