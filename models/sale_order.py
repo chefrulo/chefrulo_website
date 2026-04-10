@@ -82,7 +82,7 @@ class SaleOrder(models.Model):
                 for line in order.order_line
             )
             base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-            order_url = f"{base_url}/odoo/sales/{order.id}"
+            order_url = f"{base_url}/web#id={order.id}&cids=1&model=sale.order&view_type=form"
             message = (
                 f"New order {order.name}\n"
                 f"Customer: {order.partner_id.name}\n"
