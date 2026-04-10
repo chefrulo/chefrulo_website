@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_delivery_document_inherit" inherit_id="stock.report_delivery_document">
+
+        <!-- Reduce top whitespace by overriding external_layout header spacing -->
+        <xpath expr="//div[@class='page']" position="attributes">
+            <attribute name="style">padding-top: 0px;</attribute>
+        </xpath>
+
+        <!-- Add cooking instructions after the product table -->
+        <xpath expr="//div[@class='oe_structure'][last()]" position="before">
+            <div style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px;">
+                <h4>Cooking Instructions / Instrucciones de cocción</h4>
+                <p><strong>Oven (recommended):</strong> Preheat oven to 200°C (180°C fan). Place empanadas on a baking tray and bake for 18–20 minutes until golden brown. No need to defrost.</p>
+                <p><strong>Air fryer:</strong> Cook from frozen at 190°C for 14–16 minutes, turning halfway through.</p>
+                <p><strong>Pan fry:</strong> Heat a little oil in a pan over medium heat. Cook for 4–5 minutes each side until golden and heated through.</p>
+                <p style="margin-top: 10px; font-size: 0.85em; color: #666;">Store in the freezer. Best consumed within 3 months. Once defrosted do not refreeze.</p>
+            </div>
+        </xpath>
+
+    </template>
+</odoo>
