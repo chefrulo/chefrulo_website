@@ -2,10 +2,10 @@
 <odoo>
     <template id="report_delivery_document_inherit" inherit_id="stock.report_delivery_document">
 
-        <!-- Hide company address from header (keep only logo) via CSS -->
+        <!-- Hide company address from header via CSS scoped to this report -->
         <xpath expr="//div[@class='page']" position="before">
-            <style>
-                .company_address, div[name="company_address"] { display: none !important; }
+            <style type="text/css">
+                .company_address { visibility: hidden; width: 0; height: 0; overflow: hidden; position: absolute; }
             </style>
         </xpath>
 
