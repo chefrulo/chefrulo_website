@@ -10,11 +10,26 @@
         <!-- Add cooking instructions after the product table -->
         <xpath expr="//div[@class='oe_structure'][last()]" position="before">
             <div style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px;">
-                <h4>Cooking Instructions / Instrucciones de cocción</h4>
-                <p><strong>Oven (recommended):</strong> Preheat oven to 200°C (180°C fan). Place empanadas on a baking tray and bake for 18–20 minutes until golden brown. No need to defrost.</p>
-                <p><strong>Air fryer:</strong> Cook from frozen at 190°C for 14–16 minutes, turning halfway through.</p>
-                <p><strong>Pan fry:</strong> Heat a little oil in a pan over medium heat. Cook for 4–5 minutes each side until golden and heated through.</p>
-                <p style="margin-top: 10px; font-size: 0.85em; color: #666;">Store in the freezer. Best consumed within 3 months. Once defrosted do not refreeze.</p>
+                <h4>Cooking Guidelines</h4>
+
+                <p><strong>🥟 Oven Baking</strong><br/>
+                <em>From Frozen</em><br/>
+                Preheat your oven to 200°C (Fan 190°C).<br/>
+                Place the empanadas on a lined baking tray or grease it lightly with oil.<br/>
+                Bake for about 20 minutes, until the pastry is golden and crisp and the filling is piping hot.<br/>
+                For defrosted empanadas, reduce the time to 12 minutes.</p>
+
+                <p><strong>🥟 Air Fry</strong><br/>
+                <em>From Frozen</em><br/>
+                Cook for 10–12 minutes, flipping halfway through to ensure even crispness.<br/>
+                For defrosted empanadas, reduce the time to 7 minutes.</p>
+
+                <p><em>✨ Tip: Every oven and air fryer is a little different, so keep an eye on your empanadas as they cook. They're ready when they're beautifully golden and smell irresistible!</em></p>
+
+                <p><strong>🥟 Deep Fry</strong><br/>
+                Heat oil to 170°C.<br/>
+                Fry for 3–4 minutes, until golden.<br/>
+                Drain on paper towels to remove excess oil.</p>
             </div>
         </xpath>
 
