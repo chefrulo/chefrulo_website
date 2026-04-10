@@ -2,6 +2,13 @@
 <odoo>
     <template id="report_delivery_document_inherit" inherit_id="stock.report_delivery_document">
 
+        <!-- Hide company address from header (keep only logo) via CSS -->
+        <xpath expr="//div[@class='page']" position="before">
+            <style>
+                .company_address, div[name="company_address"] { display: none !important; }
+            </style>
+        </xpath>
+
         <!-- Remove company address from top-left (keep only logo) -->
         <xpath expr="//t[@t-set='address']" position="replace">
             <t t-set="address">
@@ -14,7 +21,7 @@
             </t>
         </xpath>
 
-        <!-- Replace information_block: remove company address, add order details left-aligned -->
+        <!-- Replace information_block: add order shipping details left-aligned -->
         <xpath expr="//t[@t-set='information_block']" position="replace">
             <t t-set="information_block">
                 <div>
@@ -51,21 +58,21 @@
             <div style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px;">
                 <h4>Cooking Guidelines</h4>
 
-                <p><strong>🥟 Oven Baking</strong><br/>
+                <p><strong>Oven Baking</strong><br/>
                 <em>From Frozen</em><br/>
                 Preheat your oven to 200°C (Fan 190°C).<br/>
                 Place the empanadas on a lined baking tray or grease it lightly with oil.<br/>
                 Bake for about 20 minutes, until the pastry is golden and crisp and the filling is piping hot.<br/>
                 For defrosted empanadas, reduce the time to 12 minutes.</p>
 
-                <p><strong>🥟 Air Fry</strong><br/>
+                <p><strong>Air Fry</strong><br/>
                 <em>From Frozen</em><br/>
                 Cook for 10–12 minutes, flipping halfway through to ensure even crispness.<br/>
                 For defrosted empanadas, reduce the time to 7 minutes.</p>
 
-                <p><em>✨ Tip: Every oven and air fryer is a little different, so keep an eye on your empanadas as they cook. They're ready when they're beautifully golden and smell irresistible!</em></p>
+                <p><em>Tip: Every oven and air fryer is a little different, so keep an eye on your empanadas as they cook. They're ready when they're beautifully golden and smell irresistible!</em></p>
 
-                <p><strong>🥟 Deep Fry</strong><br/>
+                <p><strong>Deep Fry</strong><br/>
                 Heat oil to 170°C.<br/>
                 Fry for 3–4 minutes, until golden.<br/>
                 Drain on paper towels to remove excess oil.</p>
