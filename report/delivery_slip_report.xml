@@ -2,12 +2,51 @@
 <odoo>
     <template id="report_delivery_document_inherit" inherit_id="stock.report_delivery_document">
 
-        <!-- Reduce top whitespace by overriding external_layout header spacing -->
-        <xpath expr="//div[@class='page']" position="attributes">
-            <attribute name="style">padding-top: 0px;</attribute>
+        <!-- Remove company address from top-left (keep only logo) -->
+        <xpath expr="//t[@t-set='address']" position="replace">
+            <t t-set="address">
+                <div name="div_outgoing_address">
+                    <div name="outgoing_delivery_address" t-if="o.should_print_delivery_address()">
+                        <div t-out="o.move_ids[0].partner_id or o.partner_id"
+                            t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                    </div>
+                </div>
+            </t>
         </xpath>
 
-        <!-- Add cooking instructions after the product table -->
+        <!-- Replace information_block: remove company address, add order details left-aligned -->
+        <xpath expr="//t[@t-set='information_block']" position="replace">
+            <t t-set="information_block">
+                <div>
+                    <t t-set="sale_order" t-value="o.sale_id"/>
+                    <div t-if="sale_order">
+                        <p class="mb-1"><strong>Shipping Method:</strong>
+                            <t t-if="sale_order.carrier_id">
+                                <span t-field="sale_order.carrier_id.name"/>
+                            </t>
+                            <t t-else="">Free</t>
+                        </p>
+                        <p class="mb-1" t-if="sale_order.carrier_id.carrier_description">
+                            <strong>Shipping Description:</strong>
+                            <span t-field="sale_order.carrier_id.carrier_description"/>
+                        </p>
+                        <p class="mb-1">
+                            <strong>Shipping Date:</strong>
+                            <t t-if="sale_order.delivery_date">
+                                <span t-esc="sale_order.delivery_date"/>
+                            </t>
+                            <t t-else="">Not Set</t>
+                        </p>
+                        <p class="mb-1" t-if="sale_order.shipping_note">
+                            <strong>Shipping Note:</strong>
+                            <span t-esc="sale_order.shipping_note"/>
+                        </p>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+
+        <!-- Add cooking instructions after the last oe_structure -->
         <xpath expr="//div[@class='oe_structure'][last()]" position="before">
             <div style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px;">
                 <h4>Cooking Guidelines</h4>
