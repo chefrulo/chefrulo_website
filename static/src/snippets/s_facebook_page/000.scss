@@ -6,11 +6,12 @@
         padding: 0;
         overflow: hidden;
 
-        iframe {
-            display: block;
+        .fb-page,
+        .fb-page span,
+        .fb-page iframe {
+            display: block !important;
             width: 100% !important;
             max-width: 100% !important;
-            border: none !important;
         }
     }
 }

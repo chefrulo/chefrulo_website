@@ -15,35 +15,37 @@ const FacebookPage = publicWidget.Widget.extend({
         const height = parseInt(this.el.dataset.height || "700", 10);
         const tabs = this.el.dataset.tabs || "photos";
 
-        // Use the container's actual rendered width
-        const width = containerEl.getBoundingClientRect().width
-            || this.el.getBoundingClientRect().width
-            || window.innerWidth
-            || 800;
+        // Ensure fb-root exists (required by the SDK)
+        if (!document.getElementById("fb-root")) {
+            const fbRoot = document.createElement("div");
+            fbRoot.id = "fb-root";
+            document.body.prepend(fbRoot);
+        }
 
-        const encodedUrl = encodeURIComponent(`https://www.facebook.com/${page}`);
-        const iframeEl = document.createElement("iframe");
-        iframeEl.src = [
-            `https://www.facebook.com/plugins/page.php`,
-            `?href=${encodedUrl}`,
-            `&tabs=${tabs}`,
-            `&width=${Math.floor(width)}`,
-            `&height=${height}`,
-            `&small_header=false`,
-            `&adapt_container_width=true`,
-            `&hide_cover=false`,
-            `&show_facepile=false`,
-        ].join("");
-        iframeEl.style.border = "none";
-        iframeEl.style.overflow = "hidden";
-        iframeEl.style.display = "block";
-        iframeEl.style.width = `${Math.floor(width)}px`;
-        iframeEl.style.height = `${height}px`;
-        iframeEl.setAttribute("scrolling", "no");
-        iframeEl.setAttribute("allowFullScreen", "true");
-        iframeEl.setAttribute("allow", "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share");
+        // Build the XFBML div — the SDK measures the container for true full-width
+        const fbPageEl = document.createElement("div");
+        fbPageEl.className = "fb-page";
+        fbPageEl.dataset.href = `https://www.facebook.com/${page}`;
+        fbPageEl.dataset.tabs = tabs;
+        fbPageEl.dataset.width = "";           // empty = SDK measures container
+        fbPageEl.dataset.height = height;
+        fbPageEl.dataset.smallHeader = "false";
+        fbPageEl.dataset.adaptContainerWidth = "true";
+        fbPageEl.dataset.hideCover = "false";
+        fbPageEl.dataset.showFacepile = "false";
+        containerEl.appendChild(fbPageEl);
 
-        containerEl.appendChild(iframeEl);
+        // Load SDK or re-parse if already loaded
+        if (!document.getElementById("facebook-jssdk")) {
+            const script = document.createElement("script");
+            script.id = "facebook-jssdk";
+            script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0";
+            script.async = true;
+            script.defer = true;
+            document.body.appendChild(script);
+        } else if (window.FB) {
+            window.FB.XFBML.parse(containerEl);
+        }
 
         return this._super(...arguments);
     },
