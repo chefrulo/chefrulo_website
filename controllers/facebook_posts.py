@@ -26,8 +26,13 @@ class FacebookPostsController(http.Controller):
                 'access_token': page_token,
             }
             resp = requests.get(url, params=params, timeout=10)
-            resp.raise_for_status()
             data = resp.json()
+            if 'error' in data:
+                return request.make_response(
+                    json.dumps({'error': data['error']}),
+                    headers=[('Content-Type', 'application/json')],
+                )
+            resp.raise_for_status()
 
             posts = [
                 {
