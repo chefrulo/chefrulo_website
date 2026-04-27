@@ -9,66 +9,40 @@ const FacebookPage = publicWidget.Widget.extend({
     /**
      * @override
      */
-    async start() {
+    start() {
         const containerEl = this.el.querySelector(".o_facebook_container");
         const page = this.el.dataset.facebookPage || "chefrulo.uk";
-        const limit = parseInt(this.el.dataset.limit || "6", 10);
+        const height = parseInt(this.el.dataset.height || "700", 10);
 
-        containerEl.innerHTML = this._loadingHTML();
+        // Use section width for full-width embed
+        const width = this.el.offsetWidth || containerEl.parentElement?.offsetWidth || 800;
 
-        try {
-            const resp = await fetch(
-                `/facebook/page-posts?page=${encodeURIComponent(page)}&limit=${limit}`
-            );
-            const data = await resp.json();
+        const encodedUrl = encodeURIComponent(`https://www.facebook.com/${page}`);
+        const iframeEl = document.createElement("iframe");
+        iframeEl.src = [
+            `https://www.facebook.com/plugins/page.php`,
+            `?href=${encodedUrl}`,
+            `&tabs=timeline`,
+            `&width=${width}`,
+            `&height=${height}`,
+            `&small_header=false`,
+            `&adapt_container_width=true`,
+            `&hide_cover=false`,
+            `&show_facepile=false`,
+        ].join("");
+        iframeEl.style.border = "none";
+        iframeEl.style.overflow = "hidden";
+        iframeEl.style.display = "block";
+        iframeEl.setAttribute("scrolling", "no");
+        iframeEl.setAttribute("allowFullScreen", "true");
+        iframeEl.setAttribute("allow", "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share");
+        iframeEl.width = width;
+        iframeEl.height = height;
+        iframeEl.classList.add("w-100");
 
-            if (data.error || !data.posts || !data.posts.length) {
-                containerEl.innerHTML = "";
-                return this._super(...arguments);
-            }
-
-            containerEl.innerHTML = this._buildGrid(data.posts);
-        } catch (_) {
-            containerEl.innerHTML = "";
-        }
+        containerEl.appendChild(iframeEl);
 
         return this._super(...arguments);
-    },
-
-    _loadingHTML() {
-        return `<div class="s_facebook_loading"></div>`;
-    },
-
-    _buildGrid(posts) {
-        const items = posts
-            .map(
-                (post) => `
-            <a class="s_facebook_item"
-               href="${this._escape(post.url)}"
-               target="_blank"
-               rel="noopener noreferrer"
-               aria-label="${this._escape(post.message || "Facebook post")}">
-                <img src="${this._escape(post.image)}" alt="" loading="lazy"/>
-                ${
-                    post.message
-                        ? `<div class="s_facebook_overlay">
-                        <p>${this._escape(post.message)}</p>
-                    </div>`
-                        : ""
-                }
-            </a>`
-            )
-            .join("");
-
-        return `<div class="s_facebook_grid">${items}</div>`;
-    },
-
-    _escape(str) {
-        return (str || "")
-            .replace(/&/g, "&amp;")
-            .replace(/"/g, "&quot;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
     },
 
     /**

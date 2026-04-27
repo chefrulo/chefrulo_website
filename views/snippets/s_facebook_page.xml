@@ -4,9 +4,9 @@
 <template id="s_facebook_page" name="Facebook Page">
     <section class="s_facebook_page"
              data-facebook-page="chefrulo.uk"
-             data-limit="6">
+             data-height="700">
         <div class="o_facebook_container o_not_editable">
-            <!-- Grid is built by the public widget. -->
+            <!-- Iframe is built by the public widget. -->
         </div>
     </section>
 </template>
