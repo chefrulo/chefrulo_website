@@ -4,7 +4,8 @@
 <template id="s_facebook_page" name="Facebook Page">
     <section class="s_facebook_page"
              data-facebook-page="chefrulo.uk"
-             data-height="700">
+             data-height="700"
+             data-tabs="photos">
         <div class="o_facebook_container o_not_editable">
             <!-- Iframe is built by the public widget. -->
         </div>

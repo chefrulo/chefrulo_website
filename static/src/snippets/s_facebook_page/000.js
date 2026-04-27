@@ -13,17 +13,21 @@ const FacebookPage = publicWidget.Widget.extend({
         const containerEl = this.el.querySelector(".o_facebook_container");
         const page = this.el.dataset.facebookPage || "chefrulo.uk";
         const height = parseInt(this.el.dataset.height || "700", 10);
+        const tabs = this.el.dataset.tabs || "photos";
 
-        // Use viewport width so Facebook renders content at full width
-        const width = Math.min(window.innerWidth || document.documentElement.clientWidth, 1200);
+        // Use the container's actual rendered width
+        const width = containerEl.getBoundingClientRect().width
+            || this.el.getBoundingClientRect().width
+            || window.innerWidth
+            || 800;
 
         const encodedUrl = encodeURIComponent(`https://www.facebook.com/${page}`);
         const iframeEl = document.createElement("iframe");
         iframeEl.src = [
             `https://www.facebook.com/plugins/page.php`,
             `?href=${encodedUrl}`,
-            `&tabs=timeline`,
-            `&width=${width}`,
+            `&tabs=${tabs}`,
+            `&width=${Math.floor(width)}`,
             `&height=${height}`,
             `&small_header=false`,
             `&adapt_container_width=true`,
@@ -33,12 +37,11 @@ const FacebookPage = publicWidget.Widget.extend({
         iframeEl.style.border = "none";
         iframeEl.style.overflow = "hidden";
         iframeEl.style.display = "block";
+        iframeEl.style.width = `${Math.floor(width)}px`;
+        iframeEl.style.height = `${height}px`;
         iframeEl.setAttribute("scrolling", "no");
         iframeEl.setAttribute("allowFullScreen", "true");
         iframeEl.setAttribute("allow", "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share");
-        iframeEl.width = width;
-        iframeEl.height = height;
-        iframeEl.classList.add("w-100");
 
         containerEl.appendChild(iframeEl);
 
