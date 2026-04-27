@@ -19,9 +19,7 @@ class FacebookPostsController(http.Controller):
             )
 
         try:
-            # Use /me/posts with the Page Access Token so the page reads its own posts
-            # This avoids needing pages_read_engagement via App Review
-            url = 'https://graph.facebook.com/v19.0/me/posts'
+            url = 'https://graph.facebook.com/v19.0/me/published_posts'
             params = {
                 'fields': 'message,full_picture,permalink_url,created_time',
                 'limit': max(1, min(int(limit), 12)),
