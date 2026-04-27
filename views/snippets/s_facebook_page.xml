@@ -3,7 +3,7 @@
 
 <template id="s_facebook_page" name="Facebook Page">
     <section class="s_facebook_page"
-             data-facebook-page="chefrulo"
+             data-facebook-page="chefrulo.uk"
              data-facebook-app-id="2581581135576762">
         <div class="o_container_small o_facebook_container o_not_editable">
             <!-- The iframe will be added here by the public widget. -->

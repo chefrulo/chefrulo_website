@@ -13,7 +13,8 @@ const FacebookPage = publicWidget.Widget.extend({
         const containerEl = this.el.querySelector(".o_facebook_container");
         const pageUrl = this.el.dataset.facebookPage || "";
         const appId = this.el.dataset.facebookAppId || "";
-        const width = containerEl.offsetWidth || 500;
+        // Use parent width if container not yet laid out
+        const width = containerEl.offsetWidth || containerEl.parentElement?.offsetWidth || 500;
 
         // Load the Facebook SDK if not already loaded
         if (!document.getElementById("facebook-jssdk")) {
