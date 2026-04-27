@@ -39,7 +39,7 @@ const FacebookPage = publicWidget.Widget.extend({
         if (!document.getElementById("facebook-jssdk")) {
             const script = document.createElement("script");
             script.id = "facebook-jssdk";
-            script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0";
+            script.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0&appId=2581581135576762";
             script.async = true;
             script.defer = true;
             document.body.appendChild(script);
