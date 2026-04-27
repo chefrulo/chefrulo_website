@@ -22,6 +22,8 @@
         "views/product_views.xml",
         "views/recipe_views.xml",
         "views/sale_order_views.xml",
+        "views/snippets/s_facebook_page.xml",
+        "views/snippets/snippets_inherit.xml",
     ],
     "assets": {
         "web.assets_frontend": [

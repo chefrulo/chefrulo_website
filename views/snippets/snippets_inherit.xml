@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Add Facebook Page snippet next to Instagram Page in the snippet panel -->
+<template id="snippets_facebook_page" inherit_id="website.snippets">
+    <xpath expr="//t[@t-snippet='website.s_instagram_page']" position="after">
+        <t t-snippet="chefrulo_website.s_facebook_page" string="Facebook Page"
+           t-thumbnail="/chefrulo_website/static/src/img/snippet_facebook_page.svg">
+            <keywords>social media, facebook, feed, fb</keywords>
+        </t>
+    </xpath>
+</template>
+
+</odoo>

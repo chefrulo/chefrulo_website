@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_facebook_page" name="Facebook Page">
+    <section class="s_facebook_page"
+             data-facebook-page="chefrulo"
+             data-facebook-app-id="2581581135576762">
+        <div class="o_container_small o_facebook_container o_not_editable">
+            <!-- The iframe will be added here by the public widget. -->
+        </div>
+    </section>
+</template>
+
+<template id="s_facebook_page_options" inherit_id="website.snippet_options">
+    <xpath expr="." position="inside">
+        <div data-js="FacebookPage" data-selector=".s_facebook_page">
+            <we-alert class="mt-2">
+                Your Facebook page must be public to be integrated into your website.
+            </we-alert>
+            <we-input string="Facebook Page"
+                      class="o_we_large"
+                      placeholder="chefrulo"
+                      data-set-facebook-page=""
+                      data-no-preview="true"/>
+        </div>
+    </xpath>
+</template>
+
+<asset id="chefrulo_website.s_facebook_page_000_js" name="Facebook Page 000 JS">
+    <bundle>web.assets_frontend</bundle>
+    <path>chefrulo_website/static/src/snippets/s_facebook_page/000.js</path>
+</asset>
+
+<asset id="chefrulo_website.s_facebook_page_000_scss" name="Facebook Page 000 SCSS">
+    <bundle>web.assets_frontend</bundle>
+    <path>chefrulo_website/static/src/snippets/s_facebook_page/000.scss</path>
+</asset>
+
+</odoo>
