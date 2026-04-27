@@ -14,8 +14,8 @@ const FacebookPage = publicWidget.Widget.extend({
         const page = this.el.dataset.facebookPage || "chefrulo.uk";
         const height = parseInt(this.el.dataset.height || "700", 10);
 
-        // Use section width for full-width embed
-        const width = this.el.offsetWidth || containerEl.parentElement?.offsetWidth || 800;
+        // Use viewport width so Facebook renders content at full width
+        const width = Math.min(window.innerWidth || document.documentElement.clientWidth, 1200);
 
         const encodedUrl = encodeURIComponent(`https://www.facebook.com/${page}`);
         const iframeEl = document.createElement("iframe");
