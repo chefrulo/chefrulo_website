@@ -10,7 +10,7 @@ class FacebookPostsController(http.Controller):
     def get_page_posts(self, page='chefrulo.uk', limit='6', **kwargs):
         page_token = request.env['ir.config_parameter'].sudo().get_param(
             'chefrulo.facebook_page_token', ''
-        )
+        ).strip()
 
         if not page_token:
             return request.make_response(
