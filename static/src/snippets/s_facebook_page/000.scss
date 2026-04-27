@@ -1,8 +1,80 @@
 .s_facebook_page {
-    div.container-fluid {
+    .o_facebook_container {
+        width: 100%;
         padding: 0;
     }
-    .o_facebook_container {
-        min-height: 500px;
+
+    .s_facebook_grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+        width: 100%;
+
+        @media (max-width: 575px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .s_facebook_item {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        aspect-ratio: 1 / 1;
+        background: #f0f0f0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .s_facebook_overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+
+            p {
+                margin: 0;
+                font-size: 0.85rem;
+                line-height: 1.4;
+                text-align: center;
+                display: -webkit-box;
+                -webkit-line-clamp: 5;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        }
+
+        &:hover {
+            img {
+                transform: scale(1.05);
+            }
+
+            .s_facebook_overlay {
+                opacity: 1;
+            }
+        }
+    }
+
+    .s_facebook_loading {
+        width: 100%;
+        min-height: 300px;
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: s_facebook_shimmer 1.5s infinite;
+    }
+
+    @keyframes s_facebook_shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
     }
 }
