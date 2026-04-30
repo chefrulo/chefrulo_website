@@ -121,14 +121,30 @@ class SaleOrder(models.Model):
     def action_send_payment_request(self):
         """Open email composer with a pre-rendered payment request."""
         self.ensure_one()
-        portal_url = self.get_portal_url()
+
+        # Generate a direct Stripe payment link via payment.link.wizard
+        try:
+            wizard = self.env['payment.link.wizard'].with_context(
+                active_model='sale.order',
+                active_id=self.id,
+            ).create({
+                'res_model': 'sale.order',
+                'res_id': self.id,
+                'amount': self.amount_total,
+                'currency_id': self.currency_id.id,
+                'partner_id': self.partner_id.id,
+            })
+            payment_url = wizard.link
+        except Exception:
+            payment_url = self.get_portal_url()
+
         body = f"""
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
     <p>Dear {self.partner_id.name},</p>
     <p>Your order <strong>{self.name}</strong> for
        <strong>&pound;{self.amount_total:.2f}</strong> is ready for payment.</p>
     <p style="margin: 24px 0;">
-        <a href="{portal_url}"
+        <a href="{payment_url}"
            style="background-color: #875A7B; color: white; padding: 14px 28px;
                   text-decoration: none; border-radius: 4px; display: inline-block;
                   font-size: 16px; font-weight: bold;">
