@@ -119,21 +119,32 @@ class SaleOrder(models.Model):
                     _logger.error("Failed to send SMS to %s: %s", number, str(e))
 
     def action_send_payment_request(self):
-        """Open email composer with the payment request template."""
+        """Open email composer with the payment request template pre-rendered."""
         self.ensure_one()
         template = self.env.ref('chefrulo_website.email_template_payment_request', raise_if_not_found=False)
+
+        body = ''
+        subject = f'Payment Request - {self.name}'
+        if template:
+            rendered_body = template._render_field('body_html', self.ids, post_process=True)
+            body = rendered_body.get(self.id, '')
+            rendered_subject = template._render_field('subject', self.ids)
+            subject = rendered_subject.get(self.id, subject)
+
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'mail.compose.message',
             'view_mode': 'form',
-            'view_id': self.env.ref('mail.email_compose_message_wizard_form').id,
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
             'target': 'new',
             'context': {
                 'default_model': 'sale.order',
-                'default_res_id': self.id,
-                'default_use_template': bool(template),
-                'default_template_id': template.id if template else False,
+                'default_res_ids': self.ids,
                 'default_composition_mode': 'comment',
+                'default_partner_ids': self.partner_id.ids,
+                'default_subject': subject,
+                'default_body': body,
                 'force_email': True,
             },
         }
