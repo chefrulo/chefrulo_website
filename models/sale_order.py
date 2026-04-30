@@ -119,18 +119,26 @@ class SaleOrder(models.Model):
                     _logger.error("Failed to send SMS to %s: %s", number, str(e))
 
     def action_send_payment_request(self):
-        """Open email composer with the payment request template pre-rendered."""
+        """Open email composer with a pre-rendered payment request."""
         self.ensure_one()
-        template = self.env.ref('chefrulo_website.email_template_payment_request', raise_if_not_found=False)
-
-        body = ''
-        subject = f'Payment Request - {self.name}'
-        if template:
-            rendered_body = template._render_field('body_html', self.ids)
-            body = rendered_body.get(self.id, '')
-            rendered_subject = template._render_field('subject', self.ids)
-            subject = rendered_subject.get(self.id, subject)
-
+        portal_url = self.get_portal_url()
+        body = f"""
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+    <p>Dear {self.partner_id.name},</p>
+    <p>Your order <strong>{self.name}</strong> for
+       <strong>&pound;{self.amount_total:.2f}</strong> is ready for payment.</p>
+    <p style="margin: 24px 0;">
+        <a href="{portal_url}"
+           style="background-color: #875A7B; color: white; padding: 14px 28px;
+                  text-decoration: none; border-radius: 4px; display: inline-block;
+                  font-size: 16px; font-weight: bold;">
+            Pay Now &mdash; &pound;{self.amount_total:.2f}
+        </a>
+    </p>
+    <p>Do not hesitate to contact us if you have any questions.</p>
+    <p>Kind regards,<br/>Chef Rulo &amp; Team</p>
+</div>
+"""
         return {
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
@@ -143,7 +151,7 @@ class SaleOrder(models.Model):
                 'default_res_ids': self.ids,
                 'default_composition_mode': 'comment',
                 'default_partner_ids': self.partner_id.ids,
-                'default_subject': subject,
+                'default_subject': f'Payment Request - {self.name}',
                 'default_body': body,
                 'force_email': True,
             },
