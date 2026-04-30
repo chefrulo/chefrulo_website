@@ -14,6 +14,7 @@
     "license": "LGPL-3",
     "depends": ["website_sale", "chefrulo_recipe"],
     "data": [
+        "data/email_templates.xml",
         "report/sale_order_reports.xml",
         "report/delivery_slip_report.xml",
         "views/templates.xml",

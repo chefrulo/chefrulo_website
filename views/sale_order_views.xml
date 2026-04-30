@@ -7,6 +7,13 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_confirm']" position="after">
+                <button name="action_send_payment_request"
+                        string="Send Payment Request"
+                        type="object"
+                        class="btn-secondary"
+                        invisible="state not in ('sale', 'done')"/>
+            </xpath>
             <xpath expr="//field[@name='note']" position="before">
                 <group string="Delivery Info" col="2">
                     <field name="delivery_date" readonly="1" invisible="not delivery_date"/>

@@ -118,6 +118,24 @@ class SaleOrder(models.Model):
                 except Exception as e:
                     _logger.error("Failed to send SMS to %s: %s", number, str(e))
 
+    def action_send_payment_request(self):
+        """Open email composer with the payment request template."""
+        template = self.env.ref('chefrulo_website.email_template_payment_request', raise_if_not_found=False)
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'mail.compose.message',
+            'view_mode': 'form',
+            'view_id': self.env.ref('mail.email_compose_message_wizard_form').id,
+            'target': 'new',
+            'context': {
+                'default_model': 'sale.order',
+                'default_res_ids': self.ids,
+                'default_use_template': bool(template),
+                'default_template_id': template.id if template else False,
+                'default_composition_mode': 'comment',
+            },
+        }
+
     def get_available_delivery_dates(self):
         """Return list of next 5 Mon-Fri working day labels from tomorrow."""
         from datetime import date, timedelta
