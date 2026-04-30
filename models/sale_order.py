@@ -120,6 +120,7 @@ class SaleOrder(models.Model):
 
     def action_send_payment_request(self):
         """Open email composer with the payment request template."""
+        self.ensure_one()
         template = self.env.ref('chefrulo_website.email_template_payment_request', raise_if_not_found=False)
         return {
             'type': 'ir.actions.act_window',
@@ -129,10 +130,11 @@ class SaleOrder(models.Model):
             'target': 'new',
             'context': {
                 'default_model': 'sale.order',
-                'default_res_ids': self.ids,
+                'default_res_id': self.id,
                 'default_use_template': bool(template),
                 'default_template_id': template.id if template else False,
                 'default_composition_mode': 'comment',
+                'force_email': True,
             },
         }
 
