@@ -126,7 +126,7 @@ class SaleOrder(models.Model):
         body = ''
         subject = f'Payment Request - {self.name}'
         if template:
-            rendered_body = template._render_field('body_html', self.ids, post_process=True)
+            rendered_body = template._render_field('body_html', self.ids)
             body = rendered_body.get(self.id, '')
             rendered_subject = template._render_field('subject', self.ids)
             subject = rendered_subject.get(self.id, subject)
