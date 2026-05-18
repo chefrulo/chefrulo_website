@@ -12,7 +12,7 @@
     "category": "Website",
     "author": "Chefrulo",
     "license": "LGPL-3",
-    "depends": ["website_sale", "chefrulo_recipe"],
+    "depends": ["website_sale", "website_event_sale", "chefrulo_recipe"],
     "data": [
         "data/email_templates.xml",
         "report/sale_order_reports.xml",
@@ -23,6 +23,8 @@
         "views/product_views.xml",
         "views/recipe_views.xml",
         "views/sale_order_views.xml",
+        "views/event_ticket_views.xml",
+        "views/event_ticket_website_templates.xml",
         "views/snippets/s_facebook_page.xml",
         "views/snippets/snippets_inherit.xml",
     ],

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Add compare_price after price in the ticket popup form (used inside the Event form) -->
+<record id="view_event_ticket_compare_price_form" model="ir.ui.view">
+    <field name="name">event.event.ticket.compare_price.form</field>
+    <field name="model">event.event.ticket</field>
+    <field name="inherit_id" ref="event_sale.event_event_ticket_view_form_from_event"/>
+    <field name="arch" type="xml">
+        <field name="price" position="after">
+            <field name="compare_price" string="Compare Price (strikethrough)"/>
+        </field>
+    </field>
+</record>
+
+<!-- Add compare_price column to the ticket list inside the Event form -->
+<record id="view_event_ticket_compare_price_tree" model="ir.ui.view">
+    <field name="name">event.event.ticket.compare_price.tree</field>
+    <field name="model">event.event.ticket</field>
+    <field name="inherit_id" ref="event_sale.event_event_ticket_view_tree_from_event"/>
+    <field name="arch" type="xml">
+        <field name="price" position="after">
+            <field name="compare_price" string="Was" optional="show"/>
+        </field>
+    </field>
+</record>
+
+</odoo>
