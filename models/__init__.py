@@ -6,3 +6,4 @@ from . import recipe
 from . import res_country
 from . import product
 from . import event_ticket
+from . import event_event

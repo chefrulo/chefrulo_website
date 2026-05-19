@@ -25,6 +25,8 @@
         "views/sale_order_views.xml",
         "views/event_ticket_views.xml",
         "views/event_ticket_website_templates.xml",
+        "views/event_event_views.xml",
+        "views/event_full_width_template.xml",
         "views/snippets/s_facebook_page.xml",
         "views/snippets/snippets_inherit.xml",
     ],

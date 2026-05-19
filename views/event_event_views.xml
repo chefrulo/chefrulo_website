@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="view_event_full_width_layout" model="ir.ui.view">
+    <field name="name">event.event.full_width_layout</field>
+    <field name="model">event.event</field>
+    <field name="inherit_id" ref="website_event.event_event_view_form"/>
+    <field name="arch" type="xml">
+        <field name="is_published" position="after">
+            <field name="use_full_width_layout"/>
+        </field>
+    </field>
+</record>
+
+</odoo>
