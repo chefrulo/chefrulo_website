@@ -2,22 +2,19 @@
 <odoo>
 
 <!--
-    When event.use_full_width_layout is True:
+    When the event's Template (event_type_id) has use_full_width_layout = True:
     - Main content column becomes full-width (col-12)
-    - Right sidebar (date, location, registration) is hidden
+    - Right sidebar (registration widget, date, location) is hidden
     - The registration modal (#modal_ticket_registration) stays in the DOM
-      because Odoo renders it outside the row, so Book buttons anywhere in
-      the description can trigger it with:
+      so Book buttons anywhere in the description work with:
         data-bs-toggle="modal" data-bs-target="#modal_ticket_registration"
 -->
 <template id="event_description_full_width" inherit_id="website_event.event_description_full">
-    <!-- Make main content column full-width when enabled -->
     <xpath expr="//div[hasclass('col','pe-xxl-5')]" position="attributes">
-        <attribute name="t-attf-class">#{event.use_full_width_layout and 'col-12' or 'col pe-xxl-5'}</attribute>
+        <attribute name="t-attf-class">#{event.event_type_id.use_full_width_layout and 'col-12' or 'col pe-xxl-5'}</attribute>
     </xpath>
-    <!-- Hide the sidebar when full-width layout is active -->
     <xpath expr="//div[hasclass('d-lg-flex','justify-content-end','col-lg-4')]" position="attributes">
-        <attribute name="t-if">not event.use_full_width_layout</attribute>
+        <attribute name="t-if">not event.event_type_id.use_full_width_layout</attribute>
     </xpath>
 </template>
 

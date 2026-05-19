@@ -1,11 +1,11 @@
 from odoo import fields, models
 
 
-class EventEvent(models.Model):
-    _inherit = 'event.event'
+class EventType(models.Model):
+    _inherit = 'event.type'
 
     use_full_width_layout = fields.Boolean(
         string="Full Width Layout",
-        help="Hide the right sidebar and show content full-width. "
-             "Use 'Book Now' buttons in the description to open the registration popup.",
+        help="Hide the right sidebar on the event page. Add Book buttons in the "
+             "description with data-bs-target='#modal_ticket_registration'.",
     )
