@@ -41,6 +41,7 @@
             "chefrulo_website/static/src/js/catering_quote_mode.js",
             "chefrulo_website/static/src/js/shipping_address_filter.js",
             "chefrulo_website/static/src/js/delivery_date_selector.js",
+            "chefrulo_website/static/src/js/event_book_button.js",
         ],
     },
     "installable": True,
