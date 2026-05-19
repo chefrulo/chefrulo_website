@@ -11,10 +11,10 @@
 -->
 <template id="event_description_full_width" inherit_id="website_event.event_description_full">
     <xpath expr="//div[hasclass('col','pe-xxl-5')]" position="attributes">
-        <attribute name="t-attf-class">#{event.event_type_id.use_full_width_layout and 'col-12' or 'col pe-xxl-5'}</attribute>
+        <attribute name="t-attf-class">#{event.use_full_width_layout and 'col-12' or 'col pe-xxl-5'}</attribute>
     </xpath>
     <xpath expr="//div[hasclass('d-lg-flex','justify-content-end','col-lg-4')]" position="attributes">
-        <attribute name="t-if">not event.event_type_id.use_full_width_layout</attribute>
+        <attribute name="t-if">not event.use_full_width_layout</attribute>
     </xpath>
 </template>
 
