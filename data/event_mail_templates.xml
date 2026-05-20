@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+<record id="mail_template_argentine_experience_registration" model="mail.template">
+    <field name="name">The Argentine Experience – Booking Confirmation</field>
+    <field name="model_id" ref="event.model_event_registration"/>
+    <field name="subject">Your booking is confirmed – The Argentine Experience</field>
+    <field name="partner_to">{{ object.partner_id.id }}</field>
+    <field name="lang">{{ object.partner_id.lang }}</field>
+    <field name="auto_delete" eval="True"/>
+    <field name="body_html"><![CDATA[
+<div style="font-family: Georgia, 'Times New Roman', serif; max-width: 620px; margin: 0 auto; background-color: #ffffff; color: #2c2c2c;">
+
+    <!-- Header -->
+    <div style="background-color: #1a1a1a; padding: 32px 40px; text-align: center;">
+        <h1 style="margin: 0; color: #d4a843; font-size: 26px; letter-spacing: 2px; text-transform: uppercase; font-weight: normal;">
+            Chef Rulo
+        </h1>
+        <p style="margin: 6px 0 0; color: #999; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">
+            The Argentine Experience
+        </p>
+    </div>
+
+    <!-- Body -->
+    <div style="padding: 40px 40px 32px;">
+
+        <p style="font-size: 17px; margin: 0 0 20px;">Dear {{ object.partner_id.name }},</p>
+
+        <p style="font-size: 15px; line-height: 1.7; margin: 0 0 16px;">
+            Thank you for booking <strong>The Argentine Experience</strong>. We're looking forward to welcoming you.
+        </p>
+
+        <p style="font-size: 15px; line-height: 1.7; margin: 0 0 24px;">
+            If you are vegetarian or have any special dietary requirements, please send us an email in advance so we can prepare suitable dishes for you.
+        </p>
+
+        <!-- Schedule box -->
+        <div style="background-color: #f8f4ee; border-left: 4px solid #d4a843; padding: 20px 24px; margin: 0 0 24px;">
+            <p style="margin: 0 0 10px; font-size: 15px; font-weight: bold; color: #1a1a1a;">On the day</p>
+            <p style="margin: 0 0 8px; font-size: 14px; line-height: 1.6;">
+                🚪 <strong>Doors open at 1:00 pm</strong>
+            </p>
+            <p style="margin: 0 0 8px; font-size: 14px; line-height: 1.6;">
+                🥂 <strong>1:00 pm – 1:30 pm</strong> — Complimentary welcome drink with a picada (pre-asado nibbles)
+            </p>
+            <p style="margin: 0; font-size: 14px; line-height: 1.6;">
+                🥩 <strong>From 1:30 pm</strong> — Asado dishes served in a relaxed buffet style. Please arrive by 1:30 pm.
+            </p>
+        </div>
+
+        <p style="font-size: 15px; line-height: 1.7; margin: 0 0 24px;">
+            We'll also have a selection of Argentine wines, as well as other drinks including beers and soft drinks, available to purchase on the day.
+            <strong>We accept both cash and card.</strong>
+        </p>
+
+        <p style="font-size: 15px; line-height: 1.7; margin: 0 0 28px;">
+            Please check out our FAQs on the event page, or if you have any further questions, please do not hesitate to contact us.
+        </p>
+
+        <!-- CTA Button -->
+        <div style="text-align: center; margin: 0 0 32px;">
+            <a href="https://chefrulo.com/event/the-argentine-experience-25/register"
+               style="background-color: #d4a843; color: #1a1a1a; padding: 14px 32px;
+                      text-decoration: none; border-radius: 4px; display: inline-block;
+                      font-size: 15px; font-weight: bold; letter-spacing: 0.5px;">
+                View Event Page &amp; FAQs
+            </a>
+        </div>
+
+        <p style="font-size: 17px; font-style: italic; text-align: center; color: #d4a843; margin: 0 0 32px;">
+            ¡Nos vemos en la mesa!
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #e8e0d4; margin: 0 0 24px;"/>
+
+        <!-- Contact details -->
+        <table style="width: 100%; font-size: 13px; color: #666; line-height: 1.8;">
+            <tr>
+                <td style="padding: 0;">
+                    <strong style="color: #2c2c2c;">{{ object.event_id.company_id.name }}</strong><br/>
+                    {{ object.event_id.company_id.street }}<br/>
+                    {{ object.event_id.company_id.city }}, {{ object.event_id.company_id.zip }}<br/>
+                    {% if object.event_id.company_id.phone %}
+                    📞 {{ object.event_id.company_id.phone }}<br/>
+                    {% endif %}
+                    ✉️ <a href="mailto:{{ object.event_id.company_id.email }}" style="color: #d4a843; text-decoration: none;">
+                        {{ object.event_id.company_id.email }}
+                    </a><br/>
+                    🌐 <a href="https://{{ object.event_id.company_id.website }}" style="color: #d4a843; text-decoration: none;">
+                        {{ object.event_id.company_id.website }}
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <!-- Footer -->
+    <div style="background-color: #1a1a1a; padding: 16px 40px; text-align: center;">
+        <p style="margin: 0; color: #666; font-size: 12px;">
+            © Chef Rulo — London
+        </p>
+    </div>
+
+</div>
+    ]]></field>
+</record>
+
+</odoo>
