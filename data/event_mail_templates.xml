@@ -106,4 +106,21 @@
     ]]></field>
 </record>
 
+
+<record id="sms_template_argentine_experience_reminder" model="sms.template">
+    <field name="name">The Argentine Experience – Day-of SMS Reminder</field>
+    <field name="model_id" ref="event.model_event_registration"/>
+    <field name="body">The Argentine Experience is today 🇦🇷🔥
+
+We can't wait to welcome you, {{ object.partner_id.name }}!
+
+📍 523 Bromley Road, BR1 4PG, London
+
+🗺 https://maps.google.com/?q=523+Bromley+Road+BR1+4PG
+
+Doors open at 1:00 pm — please arrive by 1:30 pm.
+
+See you soon! 🥩🍷</field>
+</record>
+
 </odoo>
