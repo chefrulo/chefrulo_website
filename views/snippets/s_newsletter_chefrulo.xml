@@ -20,7 +20,54 @@
                     <strong style="color: #e8c888;">before anyone else</strong><br/>
                     when the next one is ready.
                 </p>
-                <t t-snippet-call="website_mass_mailing.s_newsletter_subscribe_form"/>
+                <section class="s_website_form" data-vcss="001" data-snippet="s_website_form" data-name="Form">
+                    <form action="/website/form/" method="post" enctype="multipart/form-data"
+                          class="o_mark_required"
+                          data-mark="*"
+                          data-model_name="mailing.contact"
+                          data-success-mode="message"
+                          hide-change-model="true">
+
+                        <!-- Pre-select mailing list "Chef Rulo - Experiencia Argentina Next Event" -->
+                        <div class="s_website_form_field d-none" data-type="many2many" data-name="Field">
+                            <div class="s_website_form_multiple" data-name="list_ids">
+                                <input type="checkbox" class="s_website_form_input" name="list_ids" value="3" checked="1"/>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 text-start">
+                            <div class="col-12 s_website_form_field s_website_form_model_required" data-type="char" data-name="Field">
+                                <input type="text" name="name" placeholder="Your name *"
+                                       class="form-control s_website_form_input"
+                                       style="background: rgba(255,255,255,0.1); border: 1px solid #5a4a36; color: #fff; padding: 14px 16px;"
+                                       required="1"/>
+                            </div>
+                            <div class="col-12 s_website_form_field" data-type="char" data-name="Field">
+                                <input type="tel" name="mobile" placeholder="Your phone"
+                                       class="form-control s_website_form_input"
+                                       style="background: rgba(255,255,255,0.1); border: 1px solid #5a4a36; color: #fff; padding: 14px 16px;"/>
+                            </div>
+                            <div class="col-12 s_website_form_field s_website_form_model_required" data-type="email" data-name="Field">
+                                <input type="email" name="email" placeholder="your@email.com *"
+                                       class="form-control s_website_form_input"
+                                       style="background: rgba(255,255,255,0.1); border: 1px solid #5a4a36; color: #fff; padding: 14px 16px;"
+                                       required="1"/>
+                            </div>
+                            <div class="col-12 s_website_form_submit" data-name="Submit Button">
+                                <button type="submit" class="btn w-100 s_website_form_send"
+                                        style="background: #c8a060; color: #111; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; padding: 14px; font-family: Georgia, serif;">
+                                    Save my seat
+                                </button>
+                                <span id="s_website_form_result"></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="s_website_form_end_message d-none">
+                        <p class="mt-3" style="color: #c8a060; font-size: 16px; font-family: Georgia, serif;">
+                            ✓ You're on the list. We'll be in touch — see you in the garden.
+                        </p>
+                    </div>
+                </section>
                 <p class="mt-3 mb-0" style="color: #5a4a36; font-size: 11px; font-family: Georgia, serif;">
                     No spam · One email when the next experience opens · Unsubscribe anytime
                 </p>
