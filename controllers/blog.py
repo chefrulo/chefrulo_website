@@ -24,6 +24,16 @@ class ChefruloBlogController(WebsiteBlog):
         '''/learn/<model("blog.blog"):blog>/tag/<string:tag>/page/<int:page>''',
     ], type='http', auth="public", website=True, sitemap=True)
     def blog(self, blog=None, tag=None, page=1, search=None, **opt):
+        # WebsiteBlog.blog() redirects to '/blog/<slug>' when there's a single
+        # blog and none was specified in the URL — reproduce that shortcut
+        # here so it lands on '/learn/<slug>' directly instead of bouncing
+        # through the old '/blog/<slug>' path first.
+        if not blog:
+            from odoo.addons.website.controllers.main import QueryURL
+            blogs = request.env['blog.blog'].search(request.website.website_domain())
+            if len(blogs) == 1:
+                url = QueryURL('/learn/%s' % slug(blogs[0]), search=search, **opt)()
+                return request.redirect(url, code=302)
         return super().blog(blog=blog, tag=tag, page=page, search=search, **opt)
 
     @http.route(['''/learn/<model("blog.blog"):blog>/feed'''], type='http', auth="public", website=True, sitemap=True)
