@@ -243,15 +243,31 @@ class WebsiteRecipes(http.Controller):
         }
         return request.render('chefrulo_website.recipes_list', values)
 
+    SERVING_OPTIONS = [2, 4, 6, 8]
+
     @http.route('/recipes/<model("recipe.recipe"):recipe>', type='http', auth='public', website=True)
-    def recipe_detail(self, recipe, **post):
+    def recipe_detail(self, recipe, portions=None, **post):
         """Display individual recipe."""
         # Check if recipe is published
         if not recipe.is_published or not recipe.active:
             return request.redirect('/recipes')
 
+        is_scalable = recipe.portion_basis != 'container'
+        selected_portions = 4
+        if is_scalable and portions:
+            try:
+                portions_int = int(portions)
+                if portions_int in self.SERVING_OPTIONS:
+                    selected_portions = portions_int
+            except ValueError:
+                pass
+
         values = {
             'recipe': recipe,
+            'is_scalable': is_scalable,
+            'serving_options': self.SERVING_OPTIONS,
+            'selected_portions': selected_portions,
+            'scaled_lines': recipe.get_scaled_lines(selected_portions) if is_scalable else recipe.get_scaled_lines(),
         }
         return request.render('chefrulo_website.recipe_detail', values)
 

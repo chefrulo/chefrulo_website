@@ -590,11 +590,27 @@
                             </t>
 
                             <!-- Quick info -->
-                            <div class="d-flex gap-4 mb-4 text-muted">
-                                <div>
-                                    <i class="fa fa-users me-1"></i>
-                                    <strong t-out="recipe.portions"/> portions
-                                </div>
+                            <div class="d-flex gap-4 mb-4 text-muted align-items-center flex-wrap">
+                                <t t-if="is_scalable">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="fa fa-users"></i>
+                                        <span>Servings:</span>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <t t-foreach="serving_options" t-as="opt">
+                                                <a t-attf-href="/recipes/#{recipe.id}?portions=#{opt}"
+                                                   t-attf-class="btn #{opt == selected_portions and 'btn-primary' or 'btn-outline-primary'}">
+                                                    <t t-out="opt"/>
+                                                </a>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div>
+                                        <i class="fa fa-birthday-cake me-1"></i>
+                                        <strong t-out="recipe.container_size or ('%s portions' % recipe.portions)"/>
+                                    </div>
+                                </t>
                             </div>
 
                             <!-- Description -->
@@ -616,23 +632,15 @@
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-unstyled mb-0">
-                                        <t t-foreach="recipe.line_ids" t-as="line">
+                                        <t t-foreach="scaled_lines" t-as="line">
                                             <li class="py-2 border-bottom">
-                                                <t t-if="line.ingredient_id">
-                                                    <strong t-out="line.quantity"/>
-                                                    <span t-out="line.uom_id.name"/>
-                                                    <span t-out="line.ingredient_id.name"/>
-                                                </t>
-                                                <t t-if="line.sub_recipe_id">
-                                                    <strong t-out="line.quantity"/>
-                                                    <span t-out="line.uom_id.name"/>
-                                                    <span t-out="line.sub_recipe_id.name"/>
-                                                    <span class="badge bg-info ms-1">sub-recipe</span>
-                                                </t>
+                                                <strong t-out="'%.2f' % line['quantity']"/>
+                                                <span t-out="line['uom'].name"/>
+                                                <span t-out="line['name']"/>
                                             </li>
                                         </t>
                                     </ul>
-                                    <t t-if="not recipe.line_ids">
+                                    <t t-if="not scaled_lines">
                                         <p class="text-muted mb-0">No ingredients listed.</p>
                                     </t>
                                 </div>
