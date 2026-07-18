@@ -251,6 +251,7 @@ class WebsiteRecipes(http.Controller):
         # Check if recipe is published
         if not recipe.is_published or not recipe.active:
             return request.redirect('/recipes')
+        recipe = recipe.sudo()
 
         is_scalable = recipe.portion_basis != 'container'
         selected_portions = 4
